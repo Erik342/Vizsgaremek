@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kártyaválasztó — Részletes kártya</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="header">
+      <h1>Kártyaválasztó — Részletes kártya</h1>
+      <p class="lead">A középső kártyán most több adat látható: tulajdonos, lejárat, egyenleg és utolsó 4 számjegy.</p>
+    </header>
+
+    <section class="carousel" id="carousel" aria-roledescription="carousel">
+      <button class="nav prev" id="prevBtn" aria-label="Előző kártya">‹</button>
+
+      <div class="slot left" id="leftSlot" aria-hidden="true"></div>
+
+      <div class="slot center" id="centerSlot" role="group" aria-label="Középső kártya">
+        <!-- center card rendered here -->
+      </div>
+
+      <div class="slot right" id="rightSlot" aria-hidden="true"></div>
+
+      <button class="nav next" id="nextBtn" aria-label="Következő kártya">›</button>
+    </section>
+
+    <section class="info panel" id="info">
+      <h2 id="cardName">—</h2>
+      <div class="price" id="cardPrice">—</div>
+      <ul id="cardFeatures" class="features"></ul>
+      <div class="meta" id="cardMeta"></div>
+      <div class="actions">
+        <button id="chooseBtn" class="btn primary">Ezt választom</button>
+      </div>
+    </section>
+
+    <footer class="muted">Swipe (mobilon) vagy használd a nyilakat / gombokat. Demo — nincs valódi rendelés.</footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
