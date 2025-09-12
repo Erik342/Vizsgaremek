@@ -1,6 +1,5 @@
 <?php
 session_start();
-<<<<<<< HEAD
 require 'kapcsolat.php';
 
 if ($_SESSION['szerep'] !== 'admin') {
@@ -9,7 +8,6 @@ if ($_SESSION['szerep'] !== 'admin') {
 
 $action = $_GET['action'] ?? 'list';
 
-// Új felhasználó létrehozása
 if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $jelszo = $_POST['jelszo'];
@@ -22,11 +20,9 @@ if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Felhasználó szerkesztése
 if ($action === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
 
-    // Ellenőrizzük, hogy nem admin-e az adott user
     $check = $pdo->prepare("SELECT szerep FROM felhasznalok WHERE id = ?");
     $check->execute([$id]);
     $user = $check->fetch();
@@ -46,11 +42,9 @@ if ($action === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Felhasználó törlése
 if ($action === 'delete') {
     $id = $_GET['id'];
 
-    // Admin törlés tiltása
     $check = $pdo->prepare("SELECT szerep FROM felhasznalok WHERE id = ?");
     $check->execute([$id]);
     $user = $check->fetch();
@@ -147,9 +141,3 @@ if ($action === 'delete') {
     <p><a href="admin.php?action=list">⬅ Vissza a listához</a></p>
 
 <?php endif; ?>
-=======
-if ($_SESSION['szerep'] !== 'admin') {
-    die("Nincs jogosultságod az admin felülethez!");
-}
-echo "Üdv az admin felületen, " . htmlspecialchars($_SESSION['email']);
->>>>>>> 24307fb08d99e32b9246a55f0416331592e2943c
