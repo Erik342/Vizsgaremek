@@ -1,5 +1,6 @@
 <?php
 session_start();
+<<<<<<< HEAD
 require 'kapcsolat.php';
 
 if ($_SESSION['szerep'] !== 'admin') {
@@ -146,3 +147,9 @@ if ($action === 'delete') {
     <p><a href="admin.php?action=list">⬅ Vissza a listához</a></p>
 
 <?php endif; ?>
+=======
+if ($_SESSION['szerep'] !== 'admin') {
+    die("Nincs jogosultságod az admin felülethez!");
+}
+echo "Üdv az admin felületen, " . htmlspecialchars($_SESSION['email']);
+>>>>>>> 24307fb08d99e32b9246a55f0416331592e2943c
