@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Sze 05. 11:44
+-- Létrehozás ideje: 2025. Sze 26. 09:12
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `felhasznalok` (
   `id` int(11) NOT NULL,
+  `nev` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `jelszo` varchar(255) NOT NULL,
   `letrehozasi_ido` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -39,8 +40,9 @@ CREATE TABLE `felhasznalok` (
 -- A tábla adatainak kiíratása `felhasznalok`
 --
 
-INSERT INTO `felhasznalok` (`id`, `email`, `jelszo`, `letrehozasi_ido`, `szerep`) VALUES
-(1, 'zirklerik@gmail.com', '123456ab', '2025-09-05 11:37:21', 'admin');
+INSERT INTO `felhasznalok` (`id`, `nev`, `email`, `jelszo`, `letrehozasi_ido`, `szerep`) VALUES
+(1, 'Erik', 'zirklerik@gmail.com', '123456ab', '2025-09-05 11:37:21', 'admin'),
+(2, 'asd', 'zdsfzuds@gmail.com', '123abcdefg', '2025-09-12 08:21:09', 'user');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -61,7 +63,7 @@ ALTER TABLE `felhasznalok`
 -- AUTO_INCREMENT a táblához `felhasznalok`
 --
 ALTER TABLE `felhasznalok`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

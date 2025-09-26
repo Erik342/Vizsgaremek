@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user && $password === $user['jelszo']) {
         $_SESSION['user_id'] = $user['id'];
+        $_SESSION['nev'] = $user['nev'];
         $_SESSION['email'] = $user['email'];
         $_SESSION['szerep'] = $user['szerep'];
 

@@ -13,8 +13,9 @@ if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $jelszo = $_POST['jelszo'];
     $szerep = $_POST['szerep'];
 
-    $stmt = $pdo->prepare("INSERT INTO felhasznalok (email, jelszo, szerep) VALUES (?, ?, ?)");
-    $stmt->execute([$email, $jelszo, $szerep]);
+    $nev = trim($_POST['nev']);
+    $stmt = $pdo->prepare("INSERT INTO felhasznalok (nev, email, jelszo, szerep) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$nev, $email, $jelszo, $szerep]);
 
     header("Location: admin.php?action=list");
     exit;
@@ -35,8 +36,9 @@ if ($action === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $jelszo = $_POST['jelszo'];
     $szerep = $_POST['szerep'];
 
-    $stmt = $pdo->prepare("UPDATE felhasznalok SET email = ?, jelszo = ?, szerep = ? WHERE id = ?");
-    $stmt->execute([$email, $jelszo, $szerep, $id]);
+    $nev = trim($_POST['nev']);
+    $stmt = $pdo->prepare("UPDATE felhasznalok SET nev = ?, email = ?, jelszo = ?, szerep = ? WHERE id = ?");
+    $stmt->execute([$nev, $email, $jelszo, $szerep, $id]);
 
     header("Location: admin.php?action=list");
     exit;
@@ -62,7 +64,7 @@ if ($action === 'delete') {
 ?>
 
 <h1>Admin felület</h1>
-<p>Üdv, <?= htmlspecialchars($_SESSION['email']) ?>!</p>
+<p>Üdv, <?= htmlspecialchars($_SESSION['nev']) ?> (<?= htmlspecialchars($_SESSION['email']) ?>)!</p>
 <p><a href="kilepes.php">Kijelentkezés</a></p>
 <hr>
 
@@ -77,6 +79,7 @@ if ($action === 'delete') {
     <table border="1" cellpadding="5">
         <tr>
             <th>ID</th>
+            <th>Név</th>
             <th>Email</th>
             <th>Szerep</th>
             <th>Műveletek</th>
@@ -84,6 +87,7 @@ if ($action === 'delete') {
         <?php foreach ($felhasznalok as $f): ?>
             <tr>
                 <td><?= htmlspecialchars($f['id']) ?></td>
+                <td><?= htmlspecialchars($f['nev']) ?></td>
                 <td><?= htmlspecialchars($f['email']) ?></td>
                 <td><?= htmlspecialchars($f['szerep']) ?></td>
                 <td>
@@ -101,6 +105,7 @@ if ($action === 'delete') {
 <?php elseif ($action === 'add'): ?>
     <h2>Új felhasználó hozzáadása</h2>
     <form method="post" action="admin.php?action=add">
+        Név: <input type="text" name="nev" required><br>
         Email: <input type="email" name="email" required><br>
         Jelszó: <input type="password" name="jelszo" required><br>
         Szerep:
@@ -128,15 +133,16 @@ if ($action === 'delete') {
     ?>
     <h2>Felhasználó szerkesztése</h2>
     <form method="post" action="admin.php?action=edit">
-        <input type="hidden" name="id" value="<?= $felhasznalo['id'] ?>">
-        Email: <input type="email" name="email" value="<?= htmlspecialchars($felhasznalo['email']) ?>" required><br>
-        Jelszó: <input type="text" name="jelszo" value="<?= htmlspecialchars($felhasznalo['jelszo']) ?>" required><br>
-        Szerep:
-        <select name="szerep">
-            <option value="user" <?= $felhasznalo['szerep']==='user'?'selected':'' ?>>Felhasználó</option>
-            <option value="admin" <?= $felhasznalo['szerep']==='admin'?'selected':'' ?>>Admin</option>
-        </select><br>
-        <button type="submit">Mentés</button>
+    <input type="hidden" name="id" value="<?= $felhasznalo['id'] ?>">
+    Név: <input type="text" name="nev" value="<?= htmlspecialchars($felhasznalo['nev']) ?>" required><br>
+    Email: <input type="email" name="email" value="<?= htmlspecialchars($felhasznalo['email']) ?>" required><br>
+    Jelszó: <input type="text" name="jelszo" value="<?= htmlspecialchars($felhasznalo['jelszo']) ?>" required><br>
+    Szerep:
+    <select name="szerep">
+        <option value="user" <?= $felhasznalo['szerep']==='user'?'selected':'' ?>>Felhasználó</option>
+        <option value="admin" <?= $felhasznalo['szerep']==='admin'?'selected':'' ?>>Admin</option>
+    </select><br>
+    <button type="submit">Mentés</button>
     </form>
     <p><a href="admin.php?action=list">⬅ Vissza a listához</a></p>
 
