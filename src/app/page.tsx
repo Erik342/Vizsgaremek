@@ -1,66 +1,164 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { useState, useEffect } from 'react';
+import styles from './page.module.css';
+import UserIcon from '@/components/UserIcon';
+import LoginModal from '@/components/LoginModal';
+import RegisterModal from '@/components/RegisterModal';
+import { useAuth } from '@/context/AuthContext';
 
 export default function Home() {
+  const { user } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [userName, setUserName] = useState('USER');
+
+  useEffect(() => {
+    if (user?.nev) {
+      setUserName(user.nev);
+    } else {
+      setUserName('USER');
+    }
+  }, [user]);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className={styles.container}>
+      {}
+      <section className={styles['hero-section']}>
+        <video
+          className={styles['video-background']}
+          autoPlay
+          muted
+          loop
+          playsInline
+        >
+          <source src="/videos/hero.mp4" type="video/mp4" />
+        </video>
+        <div className={styles['video-overlay']}></div>
+
+        <div className={styles['hero-content']}>
+          <h1 className={styles['hero-title']}>Üdvözöllek, {userName}</h1>
+          <p className={styles['hero-subtitle']}>Kövesd nyomon kiadásaidat egyszerűen és hatékonyan</p>
+        </div>
+
+        <div className={styles['scroll-indicator']}>
+          <div className={styles['scroll-arrow']}></div>
+        </div>
+      </section>
+
+      {}
+      <section className={styles['about-section']}>
+        <div className={styles['about-container']}>
+          <h2 className={styles['section-title']}>Rólunk</h2>
+          <p className={styles['section-description']}>
+            A Kiadás Figyelő egy modern, felhasználó-barát alkalmazás, amely segít neked
+            kontrollt szerezni a pénzügyi helyzetedről. Egyszerű kezelőfelülettel és
+            hatékony eszközökkel támogatunk minden lépésedet a spórolás útján.
+          </p>
+          <p className={styles['section-description']}>
+            Legyen szó egy tanár, aki költségvetést kell készítenie, vagy egy vállalkozó,
+            aki nyomon akarja követni bevételeit és kiadásait, a Kiadás Figyelő az ideális
+            megoldás számodra.
           </p>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {}
+      <section className={styles['features-section']}>
+        <div className={styles['features-container']}>
+          <h2 className={styles['section-title']}>Miért válaszd a Kiadás Figyelőt?</h2>
+
+          <div className={styles['features-grid']}>
+            <div className={styles['feature-card']}>
+              <div className={styles['feature-icon']}>📊</div>
+              <h3 className={styles['feature-title']}>Valós idejű Nyomkövetés</h3>
+              <p className={styles['feature-text']}>
+                Kövesd nyomon minden tranzakciót valós időben és lásd pontosan, hogy hova
+                megy a pénzed.
+              </p>
+            </div>
+
+            <div className={styles['feature-card']}>
+              <div className={styles['feature-icon']}>📈</div>
+              <h3 className={styles['feature-title']}>Részletes Elemzések</h3>
+              <p className={styles['feature-text']}>
+                Használd az okos grafikonokat és jelentéseket a költségvetési trendek
+                megértéséhez.
+              </p>
+            </div>
+
+            <div className={styles['feature-card']}>
+              <div className={styles['feature-icon']}>🎯</div>
+              <h3 className={styles['feature-title']}>Költségvetés Tervezés</h3>
+              <p className={styles['feature-text']}>
+                Állítsd be költségvetési célokat és kapj értesítéseket, ha túllépsz azokat.
+              </p>
+            </div>
+
+            <div className={styles['feature-card']}>
+              <div className={styles['feature-icon']}>💳</div>
+              <h3 className={styles['feature-title']}>Több Számla Kezelés</h3>
+              <p className={styles['feature-text']}>
+                Kezeld több banki számládat és kreditkártyádat egy helyen.
+              </p>
+            </div>
+
+            <div className={styles['feature-card']}>
+              <div className={styles['feature-icon']}>🔐</div>
+              <h3 className={styles['feature-title']}>Biztonságos & Privát</h3>
+              <p className={styles['feature-text']}>
+                Az adataid védve vannak a legmodernebb titkosít��si technológiák használatával.
+              </p>
+            </div>
+
+            <div className={styles['feature-card']}>
+              <div className={styles['feature-icon']}>📱</div>
+              <h3 className={styles['feature-title']}>Ahol Vagy, Otthonosnak Lenni</h3>
+              <p className={styles['feature-text']}>
+                Hozzáférj a pénzügyeidhez bármikor, bárhonnan, bármilyen eszközről.
+              </p>
+            </div>
+          </div>
         </div>
-      </main>
+      </section>
+
+      {}
+      <section className={styles['cta-section']}>
+        <div className={styles['cta-container']}>
+          <h2 className={styles['cta-title']}>Készen állsz a kezdésre?</h2>
+          <p className={styles['section-description']}>
+            Csatlakozz százak közé, akik már kontrollt szereztek pénzügyi helyzetükről.
+          </p>
+          <button className={styles['cta-button']} onClick={() => setShowRegisterModal(true)}>
+            Regisztrálj most
+          </button>
+        </div>
+      </section>
+
+      <UserIcon onLoginClick={() => setShowLoginModal(true)} />
+
+      {}
+      {showLoginModal && (
+        <LoginModal
+          onClose={() => setShowLoginModal(false)}
+          onSuccess={() => setShowLoginModal(false)}
+          onRegisterClick={() => {
+            setShowLoginModal(false);
+            setShowRegisterModal(true);
+          }}
+        />
+      )}
+
+      {showRegisterModal && (
+        <RegisterModal
+          onClose={() => setShowRegisterModal(false)}
+          onSuccess={() => setShowRegisterModal(false)}
+          onLoginClick={() => {
+            setShowRegisterModal(false);
+            setShowLoginModal(true);
+          }}
+        />
+      )}
     </div>
   );
 }
