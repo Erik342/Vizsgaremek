@@ -70,7 +70,7 @@ export default function Home() {
 
           <div className={styles['features-grid']}>
             <div className={styles['feature-card']}>
-              <div className={styles['feature-icon']}>📊</div>
+              <div className={styles['feature-icon']}></div>
               <h3 className={styles['feature-title']}>Valós idejű Nyomkövetés</h3>
               <p className={styles['feature-text']}>
                 Kövesd nyomon minden tranzakciót valós időben és lásd pontosan, hogy hova
@@ -79,7 +79,7 @@ export default function Home() {
             </div>
 
             <div className={styles['feature-card']}>
-              <div className={styles['feature-icon']}>📈</div>
+              <div className={styles['feature-icon']}></div>
               <h3 className={styles['feature-title']}>Részletes Elemzések</h3>
               <p className={styles['feature-text']}>
                 Használd az okos grafikonokat és jelentéseket a költségvetési trendek
@@ -88,7 +88,7 @@ export default function Home() {
             </div>
 
             <div className={styles['feature-card']}>
-              <div className={styles['feature-icon']}>🎯</div>
+              <div className={styles['feature-icon']}></div>
               <h3 className={styles['feature-title']}>Költségvetés Tervezés</h3>
               <p className={styles['feature-text']}>
                 Állítsd be költségvetési célokat és kapj értesítéseket, ha túllépsz azokat.
@@ -96,7 +96,7 @@ export default function Home() {
             </div>
 
             <div className={styles['feature-card']}>
-              <div className={styles['feature-icon']}>💳</div>
+              <div className={styles['feature-icon']}></div>
               <h3 className={styles['feature-title']}>Több Számla Kezelés</h3>
               <p className={styles['feature-text']}>
                 Kezeld több banki számládat és kreditkártyádat egy helyen.
@@ -104,15 +104,15 @@ export default function Home() {
             </div>
 
             <div className={styles['feature-card']}>
-              <div className={styles['feature-icon']}>🔐</div>
+              <div className={styles['feature-icon']}></div>
               <h3 className={styles['feature-title']}>Biztonságos & Privát</h3>
               <p className={styles['feature-text']}>
-                Az adataid védve vannak a legmodernebb titkosít��si technológiák használatával.
+                Az adataid védve vannak a legmodernebb titkosítási technológiák használatával.
               </p>
             </div>
 
             <div className={styles['feature-card']}>
-              <div className={styles['feature-icon']}>📱</div>
+              <div className={styles['feature-icon']}></div>
               <h3 className={styles['feature-title']}>Ahol Vagy, Otthonosnak Lenni</h3>
               <p className={styles['feature-text']}>
                 Hozzáférj a pénzügyeidhez bármikor, bárhonnan, bármilyen eszközről.

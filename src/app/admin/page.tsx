@@ -15,12 +15,16 @@ interface UserRow {
 
 export default function AdminPanel() {
   const router = useRouter();
-  const { user, isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn, logout, isLoading } = useAuth();
   const [users, setUsers] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+
     if (!isLoggedIn) {
       router.push('/');
       return;
@@ -32,7 +36,7 @@ export default function AdminPanel() {
     }
 
     fetchUsers();
-  }, [isLoggedIn, user, router]);
+  }, [isLoading, isLoggedIn, user, router]);
 
   const fetchUsers = async () => {
     try {
@@ -57,7 +61,7 @@ export default function AdminPanel() {
     router.push('/');
   };
 
-  if (!isLoggedIn || !user || user.szerep !== 'admin') {
+  if (isLoading || !isLoggedIn || !user || user.szerep !== 'admin') {
     return <div className={styles['loading']}>Betöltés...</div>;
   }
 
@@ -77,7 +81,7 @@ export default function AdminPanel() {
           <div className={styles['section-header']}>
             <h2 className={styles['section-title']}>Felhasználók Kezelése</h2>
             <button onClick={fetchUsers} className={styles['refresh-button']}>
-              🔄 Frissítés
+              Frissítés
             </button>
           </div>
 
@@ -133,7 +137,7 @@ export default function AdminPanel() {
             </div>
 
             <div className={styles['stat-card']}>
-              <div className={styles['stat-icon']}>👨‍💼</div>
+              <div className={styles['stat-icon']}></div>
               <div className={styles['stat-content']}>
                 <div className={styles['stat-label']}>Admin Felhasználók</div>
                 <div className={styles['stat-value']}>{users.filter(u => u.szerep === 'admin').length}</div>
@@ -141,7 +145,7 @@ export default function AdminPanel() {
             </div>
 
             <div className={styles['stat-card']}>
-              <div className={styles['stat-icon']}>👤</div>
+              <div className={styles['stat-icon']}></div>
               <div className={styles['stat-content']}>
                 <div className={styles['stat-label']}>Normál Felhasználók</div>
                 <div className={styles['stat-value']}>{users.filter(u => u.szerep === 'user').length}</div>

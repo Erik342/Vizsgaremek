@@ -77,7 +77,7 @@ export default function UserIcon({ onLoginClick }: UserIconProps) {
               onClick={() => handleMenuClick('/dashboard')}
               className={styles['menu-item']}
             >
-              <span className={styles['menu-icon']}>👤</span>
+              <span className={styles['menu-icon']}></span>
               <span className={styles['menu-text']}>Számlám</span>
             </button>
 
@@ -86,7 +86,7 @@ export default function UserIcon({ onLoginClick }: UserIconProps) {
                 onClick={() => handleMenuClick('/admin')}
                 className={styles['menu-item']}
               >
-                <span className={styles['menu-icon']}>⚙️</span>
+                <span className={styles['menu-icon']}></span>
                 <span className={styles['menu-text']}>Admin Panel</span>
               </button>
             )}
@@ -95,7 +95,7 @@ export default function UserIcon({ onLoginClick }: UserIconProps) {
               onClick={handleLogout}
               className={`${styles['menu-item']} ${styles['menu-item-logout']}`}
             >
-              <span className={styles['menu-icon']}>🚪</span>
+              <span className={styles['menu-icon']}></span>
               <span className={styles['menu-text']}>Kijelentkezés</span>
             </button>
           </div>

@@ -7,20 +7,20 @@ import styles from './dashboard.module.css';
 
 export default function Dashboard() {
   const router = useRouter();
-  const { user, isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn, logout, isLoading } = useAuth();
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoading && !isLoggedIn) {
       router.push('/');
     }
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn, isLoading, router]);
 
   const handleLogout = async () => {
     await logout();
     router.push('/');
   };
 
-  if (!isLoggedIn || !user) {
+  if (isLoading || !isLoggedIn || !user) {
     return <div className={styles['loading']}>Betöltés...</div>;
   }
 
@@ -60,14 +60,14 @@ export default function Dashboard() {
           <h2 className={styles['section-title']}>Gyors Linkek</h2>
           <div className={styles['links-grid']}>
             <a href="/" className={styles['link-card']}>
-              <div className={styles['link-icon']}>🏠</div>
+              <div className={styles['link-icon']}></div>
               <h3 className={styles['link-title']}>Kezdőlap</h3>
               <p className={styles['link-description']}>Vissza a főoldalra</p>
             </a>
 
             {user.szerep === 'admin' && (
               <a href="/admin" className={styles['link-card']}>
-                <div className={styles['link-icon']}>⚙️</div>
+                <div className={styles['link-icon']}></div>
                 <h3 className={styles['link-title']}>Admin Panel</h3>
                 <p className={styles['link-description']}>Adminisztrációs beállítások</p>
               </a>
