@@ -31,7 +31,7 @@ export default function AdminPanel() {
     }
 
     if (user?.szerep !== 'admin') {
-      router.push('/dashboard');
+      router.push('/profile');
       return;
     }
 
@@ -53,6 +53,25 @@ export default function AdminPanel() {
       setError('Hiba a felhasználók betöltésekor');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRoleChange = async (userId: number, newRole: 'user' | 'admin') => {
+    try {
+      const response = await fetch('/api/users', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, szerep: newRole }),
+      });
+
+      if (response.ok) {
+        setUsers(users.map(u => u.id === userId ? { ...u, szerep: newRole } : u));
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Hiba az átállítás során');
+      }
+    } catch (err) {
+      setError('Hiba az átállítás során');
     }
   };
 
@@ -101,6 +120,7 @@ export default function AdminPanel() {
                     <th className={styles['col-email']}>Email</th>
                     <th className={styles['col-role']}>Szerep</th>
                     <th className={styles['col-date']}>Regisztráció</th>
+                    <th className={styles['col-actions']}>Akciók</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -116,6 +136,18 @@ export default function AdminPanel() {
                       </td>
                       <td className={styles['col-date']}>
                         {new Date(u.letrehozasi_ido).toLocaleDateString('hu-HU')}
+                      </td>
+                      <td className={styles['col-actions']}>
+                        {u.szerep === 'admin' ? (
+                          <span className={styles['admin-badge']}>Nem módosítható</span>
+                        ) : (
+                          <button
+                            className={styles['promote-button']}
+                            onClick={() => handleRoleChange(u.id, 'admin')}
+                          >
+                            Adminná Tétel
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -155,8 +187,8 @@ export default function AdminPanel() {
         </section>
 
         <section className={styles['navigation-section']}>
-          <a href="/dashboard" className={styles['nav-link']}>
-            ← Vissza a Fiók Oldalra
+          <a href="/profile" className={styles['nav-link']}>
+            ← Vissza a Profilra
           </a>
         </section>
       </main>

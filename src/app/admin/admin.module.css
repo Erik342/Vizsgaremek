@@ -162,6 +162,11 @@
   width: 120px;
 }
 
+.col-actions {
+  width: 160px;
+  text-align: center;
+}
+
 .role-badge {
   display: inline-block;
   padding: 4px 12px;
@@ -180,6 +185,35 @@
   background-color: rgba(160, 160, 160, 0.2);
   color: var(--text-secondary);
   border: 1px solid rgba(160, 160, 160, 0.3);
+}
+
+.promote-button {
+  background-color: var(--accent);
+  color: var(--gray-dark);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.promote-button:hover {
+  background-color: #00b8d4;
+  transform: translateY(-2px);
+}
+
+.admin-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: rgba(0, 212, 255, 0.2);
+  color: #00d4ff;
+  border: 1px solid rgba(0, 212, 255, 0.3);
 }
 
 .stats-section {

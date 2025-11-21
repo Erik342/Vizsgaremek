@@ -1,29 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styles from './page.module.css';
 import UserIcon from '@/components/UserIcon';
 import LoginModal from '@/components/LoginModal';
 import RegisterModal from '@/components/RegisterModal';
-import { useAuth } from '@/context/AuthContext';
+import HeroGreeting from '@/components/HeroGreeting';
 
 export default function Home() {
-  const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [userName, setUserName] = useState('USER');
-
-  useEffect(() => {
-    if (user?.nev) {
-      setUserName(user.nev);
-    } else {
-      setUserName('USER');
-    }
-  }, [user]);
 
   return (
     <div className={styles.container}>
-      {}
       <section className={styles['hero-section']}>
         <video
           className={styles['video-background']}
@@ -37,12 +26,8 @@ export default function Home() {
         <div className={styles['video-overlay']}></div>
 
         <div className={styles['hero-content']}>
-          <h1 className={styles['hero-title']}>Üdvözöllek, {userName}</h1>
+          <HeroGreeting />
           <p className={styles['hero-subtitle']}>Kövesd nyomon kiadásaidat egyszerűen és hatékonyan</p>
-        </div>
-
-        <div className={styles['scroll-indicator']}>
-          <div className={styles['scroll-arrow']}></div>
         </div>
       </section>
 

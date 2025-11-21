@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import styles from './UserIcon.module.css';
 
@@ -11,6 +11,11 @@ interface UserIconProps {
 export default function UserIcon({ onLoginClick }: UserIconProps) {
   const { isLoggedIn, user, logout } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -25,6 +30,18 @@ export default function UserIcon({ onLoginClick }: UserIconProps) {
     window.location.href = href;
     setShowMenu(false);
   };
+
+  if (!isMounted) {
+    return (
+      <button
+        className={styles['user-button']}
+        title="Bejelentkezés"
+        aria-label="Bejelentkezés"
+      >
+        👤
+      </button>
+    );
+  }
 
   if (!isLoggedIn) {
     return (
@@ -74,11 +91,11 @@ export default function UserIcon({ onLoginClick }: UserIconProps) {
 
           <div className={styles['menu-items']}>
             <button
-              onClick={() => handleMenuClick('/dashboard')}
+              onClick={() => handleMenuClick('/profile')}
               className={styles['menu-item']}
             >
               <span className={styles['menu-icon']}></span>
-              <span className={styles['menu-text']}>Számlám</span>
+              <span className={styles['menu-text']}>Profil</span>
             </button>
 
             {user?.szerep === 'admin' && (
