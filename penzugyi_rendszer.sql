@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Dec 02. 11:58
+-- Létrehozás ideje: 2025. Dec 09. 13:07
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -20,6 +20,41 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `penzugyi_rendszer`
 --
+
+DELIMITER $$
+--
+-- Eljárások
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `bankkartya_hozzaad` (IN `p_felhasznalo_id` INT, IN `p_kartya_szam` VARCHAR(20), IN `p_lejarat` DATE, IN `p_statusz` VARCHAR(50))   BEGIN
+    INSERT INTO bankkartyak (felhasznalo_id, kartya_szam, lejarat, statusz)
+    VALUES (p_felhasznalo_id, p_kartya_szam, p_lejarat, p_statusz);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `bankkartya_statusz_modosit` (IN `p_id` INT, IN `p_statusz` VARCHAR(50))   BEGIN
+    UPDATE bankkartyak
+    SET statusz = p_statusz
+    WHERE id = p_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `felhasznalo_letrehoz` (IN `p_nev` VARCHAR(255), IN `p_email` VARCHAR(255), IN `p_jelszo` VARCHAR(255), IN `p_szerep` VARCHAR(50))   BEGIN
+    INSERT INTO felhasznalok (nev, email, jelszo, letrehozasi_ido, szerep)
+    VALUES (p_nev, p_email, p_jelszo, NOW(), p_szerep);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `felhasznalo_modosit` (IN `p_id` INT, IN `p_nev` VARCHAR(255), IN `p_email` VARCHAR(255), IN `p_szerep` VARCHAR(50))   BEGIN
+    UPDATE felhasznalok
+    SET nev = p_nev,
+        email = p_email,
+        szerep = p_szerep
+    WHERE id = p_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `kiadas_letrehoz` (IN `p_felhasznalo_id` INT, IN `p_nev` VARCHAR(255), IN `p_tipus` VARCHAR(100), IN `p_osszeg` INT)   BEGIN
+    INSERT INTO kiadasok (felhasznalo_id, nev, tipus, osszeg, letrehozasi_ido)
+    VALUES (p_felhasznalo_id, p_nev, p_tipus, p_osszeg, NOW());
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -90,7 +125,8 @@ INSERT INTO `felhasznalok` (`id`, `nev`, `email`, `jelszo`, `letrehozasi_ido`, `
 (5, 'erik', 'zirklerik@gmail.com', '$2b$10$sEHf9MPtuneuO/r0EuWRO.bdKI7fm/LXFK7Xpo6nPTauwzYcyOJlm', '2025-11-13 16:43:59', 'admin'),
 (6, 'kevin', 'bakokevin0120@gmail.com', '$2b$10$h.Er5DOr9fAJXOHmFA1pLONplYya.LNVrmkBwAEu7PCDeVRi07GX6', '2025-11-20 09:11:20', 'admin'),
 (7, 'asd123', 'bakokevinmag@gmail.com', '$2b$10$jCUh8HiuMOJc3oB9eGZlNetXAC2qeC4zyLnQXKhLXwIrN.Z0.VjAe', '2025-11-21 08:51:22', 'admin'),
-(8, 'Peti', 'mpeti@gmail.com', '$2b$10$M77DBq6rmQ8fQ3kY.qxGxex1GcA6m9RAscv7BscQUq3W/hvK6DwWy', '2025-12-02 11:35:07', 'admin');
+(8, 'Peti', 'mpeti@gmail.com', '$2b$10$M77DBq6rmQ8fQ3kY.qxGxex1GcA6m9RAscv7BscQUq3W/hvK6DwWy', '2025-12-02 11:35:07', 'admin'),
+(9, 'asdd', 'asdd', 'asd', '2025-12-09 12:01:12', 'user');
 
 -- --------------------------------------------------------
 
@@ -131,7 +167,9 @@ CREATE TABLE `kiadasok` (
 INSERT INTO `kiadasok` (`id`, `felhasznalo_id`, `nev`, `tipus`, `osszeg`, `letrehozasi_ido`) VALUES
 (4, 4, 'Élelmiszer', 'Egyéb', '4000.00', '2025-11-21 15:53:43'),
 (5, 4, 'Élelmiszer', 'Egyéb', '3000.00', '2025-11-21 15:53:54'),
-(6, 4, 'Életbiztosítás', 'Bizosítás', '4000.00', '2025-11-21 15:54:24');
+(6, 4, 'Életbiztosítás', 'Bizosítás', '4000.00', '2025-11-21 15:54:24'),
+(10, 5, '', '', '500.00', '2025-12-09 12:50:03'),
+(11, 9, 'Elelmiszer', 'Csokoldade', '900.00', '2025-12-09 12:50:27');
 
 -- --------------------------------------------------------
 
@@ -228,7 +266,7 @@ ALTER TABLE `eletbiztositas`
 -- AUTO_INCREMENT a táblához `felhasznalok`
 --
 ALTER TABLE `felhasznalok`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT a táblához `gepjramubiztositas`
@@ -240,7 +278,7 @@ ALTER TABLE `gepjramubiztositas`
 -- AUTO_INCREMENT a táblához `kiadasok`
 --
 ALTER TABLE `kiadasok`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT a táblához `lakasbiztositas`
