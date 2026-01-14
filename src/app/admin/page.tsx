@@ -41,7 +41,9 @@ export default function AdminPanel() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/users');
+      const response = await fetch('/api/users', {
+        credentials: 'include',
+      });
       const data = await response.json();
 
       if (response.ok) {
@@ -60,6 +62,7 @@ export default function AdminPanel() {
     try {
       const response = await fetch('/api/users', {
         method: 'PUT',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, szerep: newRole }),
       });

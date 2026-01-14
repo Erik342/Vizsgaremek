@@ -1,5 +1,6 @@
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this-in-production';
 
@@ -34,4 +35,8 @@ export function decodeToken(token: string) {
   } catch {
     return null;
   }
+}
+
+export function generateVerificationToken(): string {
+  return crypto.randomBytes(32).toString('hex');
 }

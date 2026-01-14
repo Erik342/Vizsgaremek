@@ -27,6 +27,7 @@ export default function Cards() {
       description: 'Prémium kártya extra előnyökkel',
       color: '#FFD700',
       accent: '#FFA500',
+      icon: '⭐',
       features: ['Cashback 2%', 'Lounge hozzáférés', 'Utazási biztosítás'],
     },
     {
@@ -35,6 +36,7 @@ export default function Cards() {
       description: 'Klasszikus kártya mindennapi használatra',
       color: '#1C1C1C',
       accent: '#00D4FF',
+      icon: '💳',
       features: ['Alapvető biztosítás', 'Ügyfélszolgálat 24/7', 'Online kezelés'],
     },
     {
@@ -43,6 +45,7 @@ export default function Cards() {
       description: 'Hallgatók számára speciális kedvezmények',
       color: '#9933FF',
       accent: '#FF33FF',
+      icon: '🎓',
       features: ['50% kedvezmény díjak', 'Hallgatói előnyök', 'Szociális programok'],
     },
     {
@@ -51,6 +54,7 @@ export default function Cards() {
       description: 'Üzleti és vállalkozások számára',
       color: '#00AA44',
       accent: '#00FF88',
+      icon: '💼',
       features: ['API integráció', 'Csoportos kezelés', 'Analitika dashboard'],
     },
   ];

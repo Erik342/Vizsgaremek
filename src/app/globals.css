@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
+
 :root {
   --background: #1a1a1a;
   --foreground: #ffffff;
@@ -8,6 +10,7 @@
   --text-primary: #ffffff;
   --text-secondary: #a0a0a0;
   --border-color: #3a3a3a;
+  --font-signature: 'Dancing Script', cursive;
 }
 
 @media (prefers-color-scheme: dark) {

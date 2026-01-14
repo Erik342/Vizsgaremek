@@ -24,7 +24,6 @@ export default function Wallet() {
     nev: '',
     tipus: '',
     osszeg: '',
-    leiras: '',
   });
 
   useEffect(() => {
@@ -41,7 +40,9 @@ export default function Wallet() {
   const fetchExpenses = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/expenses');
+      const response = await fetch('/api/expenses', {
+        credentials: 'include',
+      });
       const data = await response.json();
 
       if (response.ok) {
@@ -75,19 +76,19 @@ export default function Wallet() {
     try {
       const response = await fetch('/api/expenses', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nev: formData.nev,
           tipus: formData.tipus,
           osszeg: parseFloat(formData.osszeg),
-          leiras: formData.leiras || null,
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        setFormData({ nev: '', tipus: '', osszeg: '', leiras: '' });
+        setFormData({ nev: '', tipus: '', osszeg: '' });
         setError('');
         fetchExpenses();
       } else {
@@ -102,6 +103,7 @@ export default function Wallet() {
     try {
       const response = await fetch(`/api/expenses/${id}`, {
         method: 'DELETE',
+        credentials: 'include',
       });
 
       if (response.ok) {
@@ -188,21 +190,6 @@ export default function Wallet() {
                   className={styles['form-input']}
                 />
               </div>
-
-              {formData.tipus === 'Egyéb' && (
-                <div className={styles['form-group']}>
-                  <label htmlFor="leiras" className={styles['form-label']}>Leírás (opcionális)</label>
-                  <input
-                    id="leiras"
-                    type="text"
-                    name="leiras"
-                    value={formData.leiras}
-                    onChange={handleInputChange}
-                    placeholder="pl. Amit vásároltam vagy mire költöttem"
-                    className={styles['form-input']}
-                  />
-                </div>
-              )}
 
               <button type="submit" className={styles['submit-button']}>
                 Hozzáadás

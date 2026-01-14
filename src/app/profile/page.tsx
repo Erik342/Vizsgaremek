@@ -74,6 +74,11 @@ export default function Profile() {
               <p className={styles['link-description']}>Kártyáid kezelése</p>
             </a>
 
+            <a href="/insurances" className={styles['link-card']}>
+              <h3 className={styles['link-title']}>Biztosítások</h3>
+              <p className={styles['link-description']}>Biztosítási szerződések kezelése</p>
+            </a>
+
             {user.szerep === 'admin' && (
               <a href="/admin" className={styles['link-card']}>
                 <h3 className={styles['link-title']}>Admin Panel</h3>

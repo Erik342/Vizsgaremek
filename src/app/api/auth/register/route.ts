@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
-import { hashPassword, generateToken } from '@/lib/auth';
+import { hashPassword, generateToken, generateVerificationToken } from '@/lib/auth';
+import { sendRegistrationEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     const results = await query('SELECT id FROM felhasznalok WHERE email = ?', [email]);
-    
+
     if (Array.isArray(results) && results.length > 0) {
       return NextResponse.json(
         { error: 'Ez az email már regisztrálva van' },
@@ -30,10 +31,12 @@ export async function POST(request: NextRequest) {
     }
 
     const hashedPassword = await hashPassword(jelszo);
+    const verificationToken = generateVerificationToken();
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     const insertResult = await query(
-      'INSERT INTO felhasznalok (nev, email, jelszo, szerep) VALUES (?, ?, ?, ?)',
-      [nev, email, hashedPassword, 'user']
+      'INSERT INTO felhasznalok (nev, email, jelszo, szerep, verification_token, verification_token_expires, email_verified) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [nev, email, hashedPassword, 'user', verificationToken, expiresAt, false]
     );
 
     const insertedUser = insertResult as any;
@@ -41,11 +44,24 @@ export async function POST(request: NextRequest) {
 
     const token = generateToken(userId, email, 'user');
 
+    const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/auth/verify-email?token=${verificationToken}`;
+
+    const emailResult = await sendRegistrationEmail({
+      email,
+      userName: nev,
+      verificationLink,
+    });
+
+    if (!emailResult.success) {
+      console.error('Failed to send verification email:', emailResult.error);
+    }
+
     const response = NextResponse.json(
       {
-        message: 'Sikeres regisztráció',
+        message: 'Sikeres regisztráció. Ellenőrizd az emailedet a fiók aktiválásához.',
         token,
         user: { id: userId, nev, email, szerep: 'user' },
+        emailSent: emailResult.success,
       },
       { status: 201 }
     );

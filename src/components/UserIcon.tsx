@@ -76,7 +76,7 @@ export default function UserIcon({ onLoginClick }: UserIconProps) {
         <div className={styles['menu-container']}>
           <div className={styles['menu-header']}>
             <div className={styles['user-avatar']}>
-              {user?.nev.charAt(0).toUpperCase()}
+              {user?.nev?.charAt(0)?.toUpperCase()}
             </div>
             <div className={styles['user-info']}>
               <div className={styles['user-name']}>{user?.nev}</div>

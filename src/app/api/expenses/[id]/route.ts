@@ -65,7 +65,7 @@ export async function DELETE(
   } catch (error) {
     console.error('Expense deletion error:', error);
     return NextResponse.json(
-      { error: 'Hiba a kiadás t��rléssekor' },
+      { error: 'Hiba a kiadás törléssekor' },
       { status: 500 }
     );
   }
