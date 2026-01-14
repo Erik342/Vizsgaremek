@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Dec 09. 13:07
+-- Létrehozás ideje: 2026. Jan 14. 10:34
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -31,9 +31,27 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `bankkartya_hozzaad` (IN `p_felhaszn
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `bankkartya_statusz_modosit` (IN `p_id` INT, IN `p_statusz` VARCHAR(50))   BEGIN
-    UPDATE bankkartyak
+    UPDATE bankkartyak SET statusz = p_statusz WHERE id = p_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `biztositas_statusz_modosit` (IN `p_id` INT, IN `p_statusz` ENUM('aktiv','szuneteltetett','megszunt',''))   BEGIN
+    UPDATE biztositasi_szerzodesek
     SET statusz = p_statusz
     WHERE id = p_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `biztositas_szerzodes_letrehoz` (IN `p_felhasznalo_id` INT, IN `p_tipus` ENUM('elet','lakas','gepjarmu',''), IN `p_kotesi_datum` DATE, IN `p_ervenyes_tol` DATE, IN `p_ervenyes_ig` DATE, IN `p_havi_dij` DECIMAL(10,2))   BEGIN
+    INSERT INTO biztositasi_szerzodesek
+    (felhasznalo_id, tipus, kotesi_datum, ervenyes_tol, ervenyes_ig, havi_dij)
+    VALUES
+    (p_felhasznalo_id, p_tipus, p_kotesi_datum, p_ervenyes_tol, p_ervenyes_ig, p_havi_dij);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eletbiztositas_letrehoz` (IN `p_szerzodes_id` INT, IN `p_biztositott_nev` VARCHAR(255), IN `p_szuletesi_datum` DATE, IN `p_kockazati_szint` ENUM('alacsony','kozepes','magas',''))   BEGIN
+    INSERT INTO eletbiztositas
+    (szerzodes_id, biztosított_nev, szuletesi_datum, kockazati_szint)
+    VALUES
+    (p_szerzodes_id, p_biztositott_nev, p_szuletesi_datum, p_kockazati_szint);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `felhasznalo_letrehoz` (IN `p_nev` VARCHAR(255), IN `p_email` VARCHAR(255), IN `p_jelszo` VARCHAR(255), IN `p_szerep` VARCHAR(50))   BEGIN
@@ -43,15 +61,31 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `felhasznalo_modosit` (IN `p_id` INT, IN `p_nev` VARCHAR(255), IN `p_email` VARCHAR(255), IN `p_szerep` VARCHAR(50))   BEGIN
     UPDATE felhasznalok
-    SET nev = p_nev,
-        email = p_email,
-        szerep = p_szerep
+    SET nev = p_nev, email = p_email, szerep = p_szerep
     WHERE id = p_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `gepjarmubiztositas_letrehoz` (IN `p_szerzodes_id` INT, IN `p_rendszam` VARCHAR(20), IN `p_alvazszam` VARCHAR(50), IN `p_gyartmany` VARCHAR(100), IN `p_tipus` VARCHAR(100), IN `p_gyartasi_ev` INT, IN `p_biztositas_tipusa` ENUM('kotelezo','casco','casco+kotelezo',''))   BEGIN
+    INSERT INTO gepjramubiztositas
+    (szerzodes_id, rendszam, alvazszam, gyartmany, tipus, gyartasi_ev, biztositas_tipusa)
+    VALUES
+    (p_szerzodes_id, p_rendszam, p_alvazszam, p_gyartmany, p_tipus, p_gyartasi_ev, p_biztositas_tipusa);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `kiadas_letrehoz` (IN `p_felhasznalo_id` INT, IN `p_nev` VARCHAR(255), IN `p_tipus` VARCHAR(100), IN `p_osszeg` INT)   BEGIN
     INSERT INTO kiadasok (felhasznalo_id, nev, tipus, osszeg, letrehozasi_ido)
     VALUES (p_felhasznalo_id, p_nev, p_tipus, p_osszeg, NOW());
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `kiadas_torol` (IN `p_id` INT)   BEGIN
+    DELETE FROM kiadasok WHERE id = p_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `lakasbiztositas_letrehoz` (IN `p_szerzodes_id` INT, IN `p_ingatlan_tipus` ENUM('tarsashaz','csaladi_haz','ikerhaz','egyeb'), IN `p_ingatlan_ertek` DECIMAL(15,2), IN `p_biztositas_tipusa` ENUM('teljeskoru','alap','tuz','vizkar','lopas'))   BEGIN
+    INSERT INTO lakasbiztositas
+    (szerzodes_id, ingatlan_tipus, ingatlan_ertek, biztositas_tipusa)
+    VALUES
+    (p_szerzodes_id, p_ingatlan_tipus, p_ingatlan_ertek, p_biztositas_tipusa);
 END$$
 
 DELIMITER ;
@@ -84,7 +118,16 @@ CREATE TABLE `biztositasi_szerzodesek` (
   `ervenyes_tol` date NOT NULL,
   `ervenyes_ig` date DEFAULT NULL,
   `havi_dij` decimal(10,2) NOT NULL,
-  `statusz` enum('aktiv','szuneteltetett','megszunt') DEFAULT 'aktiv'
+  `statusz` enum('aktiv','szuneteltetett','megszunt') DEFAULT 'aktiv',
+  `nev` varchar(255) DEFAULT NULL,
+  `lakcim` varchar(500) DEFAULT NULL,
+  `szemelyigazolvan_szam` varchar(20) DEFAULT NULL,
+  `adoszam` varchar(20) DEFAULT NULL,
+  `taj_szam` varchar(20) DEFAULT NULL,
+  `telefonszam` varchar(20) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `szuletesi_datum` date DEFAULT NULL,
+  `nemzetiseg` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -113,28 +156,27 @@ CREATE TABLE `felhasznalok` (
   `email` varchar(255) NOT NULL,
   `jelszo` varchar(255) NOT NULL,
   `letrehozasi_ido` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `szerep` enum('user','admin') NOT NULL DEFAULT 'user'
+  `szerep` enum('user','admin') NOT NULL DEFAULT 'user',
+  `email_verified` tinyint(1) DEFAULT '0',
+  `verification_token` varchar(255) DEFAULT NULL,
+  `verification_token_expires` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `felhasznalok`
 --
 
-INSERT INTO `felhasznalok` (`id`, `nev`, `email`, `jelszo`, `letrehozasi_ido`, `szerep`) VALUES
-(4, 'klicsboti', 'botondklics0129@gmail.com', '$2b$10$HoAUeUqBqN22qytQsAoXoOUx45h0mOG6azHeD9SM0lZbKId/15ii2', '2025-11-13 16:36:23', 'admin'),
-(5, 'erik', 'zirklerik@gmail.com', '$2b$10$sEHf9MPtuneuO/r0EuWRO.bdKI7fm/LXFK7Xpo6nPTauwzYcyOJlm', '2025-11-13 16:43:59', 'admin'),
-(6, 'kevin', 'bakokevin0120@gmail.com', '$2b$10$h.Er5DOr9fAJXOHmFA1pLONplYya.LNVrmkBwAEu7PCDeVRi07GX6', '2025-11-20 09:11:20', 'admin'),
-(7, 'asd123', 'bakokevinmag@gmail.com', '$2b$10$jCUh8HiuMOJc3oB9eGZlNetXAC2qeC4zyLnQXKhLXwIrN.Z0.VjAe', '2025-11-21 08:51:22', 'admin'),
-(8, 'Peti', 'mpeti@gmail.com', '$2b$10$M77DBq6rmQ8fQ3kY.qxGxex1GcA6m9RAscv7BscQUq3W/hvK6DwWy', '2025-12-02 11:35:07', 'admin'),
-(9, 'asdd', 'asdd', 'asd', '2025-12-09 12:01:12', 'user');
+INSERT INTO `felhasznalok` (`id`, `nev`, `email`, `jelszo`, `letrehozasi_ido`, `szerep`, `email_verified`, `verification_token`, `verification_token_expires`) VALUES
+(6, 'abc123', 'abc123@gmail.com', '$2b$10$aEj1AEoaTw4G7UVqwush..RaZOGP5oAd4gEdauzTjlAnj87l3nHhG', '2026-01-14 10:17:15', 'admin', 0, 'cc2571d909519513876fb6e46fb791210171b0c3715809bebef830ebb117a56c', '2026-01-15 11:17:15'),
+(7, 'admin123', 'admin123@gmail.com', '$2b$10$cZC1YOCt4DN6v65W8l3Rr.OtyKo6yqESLc5QYI3yjDx/FLQK9287C', '2026-01-14 10:19:35', 'admin', 0, 'fe35a72de5ee3821cdfca2f35758bef55a84345096a76cc47669c5ec475ec887', '2026-01-15 11:19:36');
 
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `gepjramubiztositas`
+-- Tábla szerkezet ehhez a táblához `gepjarmubiztositas`
 --
 
-CREATE TABLE `gepjramubiztositas` (
+CREATE TABLE `gepjarmubiztositas` (
   `id` int(11) NOT NULL,
   `szerzodes_id` int(11) NOT NULL,
   `rendszam` varchar(20) NOT NULL,
@@ -165,11 +207,8 @@ CREATE TABLE `kiadasok` (
 --
 
 INSERT INTO `kiadasok` (`id`, `felhasznalo_id`, `nev`, `tipus`, `osszeg`, `letrehozasi_ido`) VALUES
-(4, 4, 'Élelmiszer', 'Egyéb', '4000.00', '2025-11-21 15:53:43'),
-(5, 4, 'Élelmiszer', 'Egyéb', '3000.00', '2025-11-21 15:53:54'),
-(6, 4, 'Életbiztosítás', 'Bizosítás', '4000.00', '2025-11-21 15:54:24'),
-(10, 5, '', '', '500.00', '2025-12-09 12:50:03'),
-(11, 9, 'Elelmiszer', 'Csokoldade', '900.00', '2025-12-09 12:50:27');
+(10, 6, 'Asd', 'Élelmiszer', '123.00', '2026-01-14 10:19:13'),
+(11, 7, 'helo', 'Élelmiszer', '23.00', '2026-01-14 10:19:49');
 
 -- --------------------------------------------------------
 
@@ -216,12 +255,13 @@ ALTER TABLE `eletbiztositas`
 --
 ALTER TABLE `felhasznalok`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `verification_token` (`verification_token`);
 
 --
--- A tábla indexei `gepjramubiztositas`
+-- A tábla indexei `gepjarmubiztositas`
 --
-ALTER TABLE `gepjramubiztositas`
+ALTER TABLE `gepjarmubiztositas`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `szerzodes_id` (`szerzodes_id`);
 
@@ -230,8 +270,7 @@ ALTER TABLE `gepjramubiztositas`
 --
 ALTER TABLE `kiadasok`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_felhasznalo_id` (`felhasznalo_id`),
-  ADD KEY `idx_letrehozasi_ido` (`letrehozasi_ido`);
+  ADD KEY `felhasznalo_id` (`felhasznalo_id`);
 
 --
 -- A tábla indexei `lakasbiztositas`
@@ -254,7 +293,7 @@ ALTER TABLE `bankkartyak`
 -- AUTO_INCREMENT a táblához `biztositasi_szerzodesek`
 --
 ALTER TABLE `biztositasi_szerzodesek`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `eletbiztositas`
@@ -266,12 +305,12 @@ ALTER TABLE `eletbiztositas`
 -- AUTO_INCREMENT a táblához `felhasznalok`
 --
 ALTER TABLE `felhasznalok`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT a táblához `gepjramubiztositas`
+-- AUTO_INCREMENT a táblához `gepjarmubiztositas`
 --
-ALTER TABLE `gepjramubiztositas`
+ALTER TABLE `gepjarmubiztositas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -284,7 +323,7 @@ ALTER TABLE `kiadasok`
 -- AUTO_INCREMENT a táblához `lakasbiztositas`
 --
 ALTER TABLE `lakasbiztositas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Megkötések a kiírt táblákhoz
@@ -294,25 +333,25 @@ ALTER TABLE `lakasbiztositas`
 -- Megkötések a táblához `bankkartyak`
 --
 ALTER TABLE `bankkartyak`
-  ADD CONSTRAINT `bankkartyak_ibfk_1` FOREIGN KEY (`felhasznalo_id`) REFERENCES `felhasznalok` (`id`);
+  ADD CONSTRAINT `bankkartyak_ibfk_1` FOREIGN KEY (`felhasznalo_id`) REFERENCES `felhasznalok` (`id`) ON DELETE CASCADE;
 
 --
 -- Megkötések a táblához `biztositasi_szerzodesek`
 --
 ALTER TABLE `biztositasi_szerzodesek`
-  ADD CONSTRAINT `biztositasi_szerzodesek_ibfk_1` FOREIGN KEY (`felhasznalo_id`) REFERENCES `felhasznalok` (`id`);
+  ADD CONSTRAINT `biztositasi_szerzodesek_ibfk_1` FOREIGN KEY (`felhasznalo_id`) REFERENCES `felhasznalok` (`id`) ON DELETE CASCADE;
 
 --
 -- Megkötések a táblához `eletbiztositas`
 --
 ALTER TABLE `eletbiztositas`
-  ADD CONSTRAINT `eletbiztositas_ibfk_1` FOREIGN KEY (`szerzodes_id`) REFERENCES `biztositasi_szerzodesek` (`id`);
+  ADD CONSTRAINT `eletbiztositas_ibfk_1` FOREIGN KEY (`szerzodes_id`) REFERENCES `biztositasi_szerzodesek` (`id`) ON DELETE CASCADE;
 
 --
--- Megkötések a táblához `gepjramubiztositas`
+-- Megkötések a táblához `gepjarmubiztositas`
 --
-ALTER TABLE `gepjramubiztositas`
-  ADD CONSTRAINT `gepjramubiztositas_ibfk_1` FOREIGN KEY (`szerzodes_id`) REFERENCES `biztositasi_szerzodesek` (`id`);
+ALTER TABLE `gepjarmubiztositas`
+  ADD CONSTRAINT `gepjarmubiztositas_ibfk_1` FOREIGN KEY (`szerzodes_id`) REFERENCES `biztositasi_szerzodesek` (`id`) ON DELETE CASCADE;
 
 --
 -- Megkötések a táblához `kiadasok`
@@ -324,7 +363,7 @@ ALTER TABLE `kiadasok`
 -- Megkötések a táblához `lakasbiztositas`
 --
 ALTER TABLE `lakasbiztositas`
-  ADD CONSTRAINT `lakasbiztositas_ibfk_1` FOREIGN KEY (`szerzodes_id`) REFERENCES `biztositasi_szerzodesek` (`id`);
+  ADD CONSTRAINT `lakasbiztositas_ibfk_1` FOREIGN KEY (`szerzodes_id`) REFERENCES `biztositasi_szerzodesek` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
