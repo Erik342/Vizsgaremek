@@ -261,7 +261,7 @@ export default function AdminPanel() {
         </section>
 
         <section className={styles['broadcast-section']}>
-          <h2 className={styles['section-title']}>📢 Üzenet Küldése Összes Felhasználónak</h2>
+          <h2 className={styles['section-title']}>Üzenet Küldése Összes Felhasználónak</h2>
 
           {broadcastError && (
             <div className={styles['error-message']}>{broadcastError}</div>
@@ -300,7 +300,7 @@ export default function AdminPanel() {
                 type="text"
                 value={broadcastForm.icon}
                 onChange={handleBroadcastChange}
-                placeholder="pl. 📢, ✨, 🎉"
+                placeholder="pl. Új frissítés!"
                 maxLength={3}
                 className={styles['form-input']}
               />
@@ -343,13 +343,13 @@ export default function AdminPanel() {
               disabled={broadcastLoading}
               className={styles['submit-button']}
             >
-              {broadcastLoading ? 'Küldés...' : '📢 Üzenet Küldése'}
+              {broadcastLoading ? 'Küldés...' : 'Üzenet Kiküldése'}
             </button>
           </form>
 
           <div className={styles['broadcast-info']}>
             <p style={{ fontSize: '12px', color: '#999', marginBottom: '8px' }}>
-              💡 <strong>Tipp:</strong> Az itt létrehozott üzenet az összes felhasználó postalájában megjelenik.
+              <strong>Tipp:</strong> Az itt létrehozott üzenet az összes felhasználó postalájában megjelenik.
             </p>
             <p style={{ fontSize: '12px', color: '#999' }}>
               Az üzenet típusa alapján különböző ikonokkal jelenik meg a felhasználók felé.

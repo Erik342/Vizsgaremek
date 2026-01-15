@@ -26,7 +26,6 @@ export default function VerifyEmailPage() {
     const success = searchParams.get('success');
     const error = searchParams.get('error');
 
-    // If we have an error from the redirect
     if (error) {
       setResult({
         success: false,
@@ -36,7 +35,6 @@ export default function VerifyEmailPage() {
       return;
     }
 
-    // If success flag is set, show success (data will be empty but that's ok)
     if (success) {
       setResult({
         success: true,
@@ -47,7 +45,6 @@ export default function VerifyEmailPage() {
       return;
     }
 
-    // Otherwise, if we have a token, verify it via API
     if (!token) {
       setResult({
         success: false,
@@ -60,8 +57,7 @@ export default function VerifyEmailPage() {
     const verifyEmail = async () => {
       try {
         const response = await fetch(`/api/auth/verify-email?token=${token}`);
-        // API now redirects, so we won't reach here in normal flow
-        // But keep this as fallback
+
         const data = await response.json();
 
         if (response.ok) {
@@ -99,13 +95,12 @@ export default function VerifyEmailPage() {
           </div>
         ) : result?.success ? (
           <div className={styles['success-state']}>
-            <div className={styles['icon-success']}>✅</div>
-            <h1 className={styles['title']}>Email sikeresen verifikálva!</h1>
+            <h1 className={styles['title']}>Email sikeresen ellenőrizve!</h1>
             <p className={styles['message']}>
               {result.user?.nev ? `Üdvözöllek, ${result.user.nev}!` : 'Üdvözöllek!'}
             </p>
             <p className={styles['description']}>
-              Az email-cím verifikálva lett. Most már teljes hozzáférésed van a Kiadás Figyelőhöz.
+              Az email-cím ellenőrizve lett. Most már teljes hozzáférésed van a Kiadás Figyelőhöz.
             </p>
 
             {result.user?.email && (
