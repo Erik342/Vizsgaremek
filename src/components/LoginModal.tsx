@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import styles from './Modal.module.css';
 import { useAuth } from '@/context/AuthContext';
-import { sendWelcomeEmail } from '@/lib/email';
 
 interface LoginModalProps {
   onClose: () => void;
@@ -36,20 +35,6 @@ export default function LoginModal({
     const result = await login(email, password);
 
     if (result.success) {
-      // Extract username from email (part before @)
-      const userName = email.split('@')[0];
-
-      // Send welcome email (don't block login if it fails)
-      try {
-        await sendWelcomeEmail({
-          email,
-          userName,
-        });
-      } catch (emailError) {
-        // Log error but don't prevent login
-        console.error('Welcome email sending failed:', emailError);
-      }
-
       onSuccess();
     } else {
       setError(result.error || 'Hiba a bejelentkezésnél');

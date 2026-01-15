@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import styles from './Modal.module.css';
 import { useAuth } from '@/context/AuthContext';
-import { sendWelcomeEmail } from '@/lib/email';
 import WelcomePrompt from './WelcomePrompt';
 
 interface RegisterModalProps {
@@ -50,18 +49,8 @@ export default function RegisterModal({
     const result = await register(username, email, password);
 
     if (result.success) {
-      // Send welcome email (don't block registration if it fails)
-      try {
-        await sendWelcomeEmail({
-          email,
-          userName: username,
-        });
-      } catch (emailError) {
-        // Log error but don't prevent registration
-        console.error('Welcome email sending failed:', emailError);
-      }
-
-      // Show welcome prompt instead of immediate success
+      // Welcome email is sent by the server-side API
+      // Show welcome prompt to user
       setShowWelcomePrompt(true);
     } else {
       setError(result.error || 'Hiba a regisztrációnál');

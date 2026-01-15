@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import styles from './Modal.module.css';
+import styles from './WelcomePrompt.module.css';
 
 interface WelcomePromptProps {
   userName: string;
@@ -25,45 +25,26 @@ export default function WelcomePrompt({ userName, onClose }: WelcomePromptProps)
           ✕
         </button>
 
-        <div style={{ padding: '40px 30px', textAlign: 'center' }}>
-          <div style={{ fontSize: '56px', marginBottom: '20px' }}>👋</div>
+        <div className={styles['content-wrapper']}>
+          <div className={styles['emoji']}>👋</div>
 
-          <h2 style={{ fontSize: '26px', fontWeight: 'bold', color: '#333', marginBottom: '12px' }}>
+          <h2 className={styles['title']}>
             Üdvözöllek, {userName}!
           </h2>
 
-          <p style={{ fontSize: '15px', color: '#666', lineHeight: '1.6', marginBottom: '32px' }}>
+          <p className={styles['description']}>
             A Kiadás Figyelő segít nyomon követni kiadásaidat és kezelni biztosítási dokumentumaidat egyszerűen és hatékonyan.
           </p>
 
-          <div style={{
-            backgroundColor: '#f0f3ff',
-            padding: '16px',
-            borderRadius: '8px',
-            marginBottom: '24px',
-            border: '1px solid #e0e7ff',
-          }}>
-            <p style={{ fontSize: '14px', color: '#667eea', margin: 0, lineHeight: '1.5' }}>
+          <div className={styles['info-box']}>
+            <p className={styles['info-box-text']}>
               📬 Ellenőrizd az emaileket a postalád ikonra kattintva! Ott találod az összes fontos üzeneteket és frissítéseket.
             </p>
           </div>
 
           <button
             onClick={handleClose}
-            style={{
-              width: '100%',
-              padding: '12px 24px',
-              backgroundColor: '#667eea',
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              fontSize: '14px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#764ba2')}
-            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#667eea')}
+            className={styles['cta-button']}
           >
             Kezdjünk! 🚀
           </button>

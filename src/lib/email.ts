@@ -1,3 +1,4 @@
+import 'server-only';
 import { Resend } from 'resend';
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
@@ -5,10 +6,7 @@ const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
 function getResendClient() {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.warn('Warning: RESEND_API_KEY environment variable is not set. Email sending will fail.');
-    // Return a client instance even if API key is missing to avoid crashes
-    // The API calls will fail at runtime with a proper error message
-    return new Resend('');
+    throw new Error('Missing RESEND_API_KEY environment variable');
   }
   return new Resend(apiKey);
 }
