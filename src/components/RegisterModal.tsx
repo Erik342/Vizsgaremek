@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import styles from './Modal.module.css';
 import { useAuth } from '@/context/AuthContext';
+import { sendWelcomeEmail } from '@/lib/email';
+import WelcomePrompt from './WelcomePrompt';
 
 interface RegisterModalProps {
   onClose: () => void;
@@ -22,6 +24,7 @@ export default function RegisterModal({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showWelcomePrompt, setShowWelcomePrompt] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,13 +50,34 @@ export default function RegisterModal({
     const result = await register(username, email, password);
 
     if (result.success) {
-      onSuccess();
+      // Send welcome email (don't block registration if it fails)
+      try {
+        await sendWelcomeEmail({
+          email,
+          userName: username,
+        });
+      } catch (emailError) {
+        // Log error but don't prevent registration
+        console.error('Welcome email sending failed:', emailError);
+      }
+
+      // Show welcome prompt instead of immediate success
+      setShowWelcomePrompt(true);
     } else {
       setError(result.error || 'Hiba a regisztrációnál');
     }
 
     setIsLoading(false);
   };
+
+  const handleWelcomePromptClose = () => {
+    setShowWelcomePrompt(false);
+    onSuccess();
+  };
+
+  if (showWelcomePrompt) {
+    return <WelcomePrompt userName={username} onClose={handleWelcomePromptClose} />;
+  }
 
   return (
     <div className={styles['modal-overlay']} onClick={onClose}>

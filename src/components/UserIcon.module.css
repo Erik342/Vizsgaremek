@@ -1,7 +1,21 @@
-.user-button {
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   position: fixed;
   bottom: 30px;
   right: 30px;
+  z-index: 50;
+}
+
+.inbox-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.user-button {
+  position: relative;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -16,6 +30,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 .user-button:hover {

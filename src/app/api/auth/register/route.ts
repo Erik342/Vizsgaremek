@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { hashPassword, generateToken, generateVerificationToken } from '@/lib/auth';
-import { sendRegistrationEmail } from '@/lib/email';
+import { sendRegistrationEmail, sendWelcomeEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
@@ -56,12 +56,23 @@ export async function POST(request: NextRequest) {
       console.error('Failed to send verification email:', emailResult.error);
     }
 
+    // Send welcome email
+    const welcomeResult = await sendWelcomeEmail({
+      email,
+      userName: nev,
+    });
+
+    if (!welcomeResult.success) {
+      console.error('Failed to send welcome email:', welcomeResult.error);
+    }
+
     const response = NextResponse.json(
       {
         message: 'Sikeres regisztráció. Ellenőrizd az emailedet a fiók aktiválásához.',
         token,
         user: { id: userId, nev, email, szerep: 'user' },
         emailSent: emailResult.success,
+        welcomeEmailSent: welcomeResult.success,
       },
       { status: 201 }
     );

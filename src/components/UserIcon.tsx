@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import InboxDropdown from './InboxDropdown';
 import styles from './UserIcon.module.css';
 
 interface UserIconProps {
@@ -33,31 +34,38 @@ export default function UserIcon({ onLoginClick }: UserIconProps) {
 
   if (!isMounted) {
     return (
-      <button
-        className={styles['user-button']}
-        title="Bejelentkezés"
-        aria-label="Bejelentkezés"
-      >
-        👤
-      </button>
+      <div className={styles['user-actions']}>
+        <button
+          className={styles['user-button']}
+          title="Bejelentkezés"
+          aria-label="Bejelentkezés"
+        >
+          👤
+        </button>
+      </div>
     );
   }
 
   if (!isLoggedIn) {
     return (
-      <button
-        className={styles['user-button']}
-        onClick={onLoginClick}
-        title="Bejelentkezés"
-        aria-label="Bejelentkezés"
-      >
-        👤
-      </button>
+      <div className={styles['user-actions']}>
+        <button
+          className={styles['user-button']}
+          onClick={onLoginClick}
+          title="Bejelentkezés"
+          aria-label="Bejelentkezés"
+        >
+          👤
+        </button>
+      </div>
     );
   }
 
   return (
-    <>
+    <div className={styles['user-actions']}>
+      <div className={styles['inbox-wrapper']}>
+        <InboxDropdown />
+      </div>
       <button
         className={styles['user-button']}
         onClick={handleUserClick}
@@ -118,6 +126,6 @@ export default function UserIcon({ onLoginClick }: UserIconProps) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
