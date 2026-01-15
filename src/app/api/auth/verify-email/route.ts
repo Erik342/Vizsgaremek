@@ -7,9 +7,8 @@ export async function GET(request: NextRequest) {
     const token = searchParams.get('token');
 
     if (!token) {
-      return NextResponse.json(
-        { error: 'Token szükséges' },
-        { status: 400 }
+      return NextResponse.redirect(
+        new URL('/verify-email?error=Token szükséges', request.url)
       );
     }
 
@@ -19,9 +18,8 @@ export async function GET(request: NextRequest) {
     );
 
     if (!Array.isArray(results) || results.length === 0) {
-      return NextResponse.json(
-        { error: 'Érvénytelen vagy lejárt token' },
-        { status: 400 }
+      return NextResponse.redirect(
+        new URL('/verify-email?error=Érvénytelen vagy lejárt token', request.url)
       );
     }
 
@@ -32,15 +30,14 @@ export async function GET(request: NextRequest) {
       [user.id]
     );
 
-    return NextResponse.json(
-      { message: 'Email sikeresen verifikálva', user: { id: user.id, nev: user.nev, email: user.email } },
-      { status: 200 }
+    // Redirect to the verification success page with token so it can display the result
+    return NextResponse.redirect(
+      new URL(`/verify-email?token=${token}&success=true`, request.url)
     );
   } catch (error) {
     console.error('Email verification error:', error);
-    return NextResponse.json(
-      { error: 'Hiba az email verifikációnál' },
-      { status: 500 }
+    return NextResponse.redirect(
+      new URL('/verify-email?error=Hiba az email verifikációnál', request.url)
     );
   }
 }
