@@ -1,15 +1,31 @@
 'use client';
 
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import styles from './page.module.css';
 import UserIcon from '@/components/UserIcon';
 import LoginModal from '@/components/LoginModal';
 import RegisterModal from '@/components/RegisterModal';
 import HeroGreeting from '@/components/HeroGreeting';
+import FeatureShowcase from '@/components/FeatureShowcase';
 
 export default function Home() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const { isLoggedIn, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Betöltés...</div>;
+  }
+
+  if (isLoggedIn) {
+    return (
+      <div className={styles.container}>
+        <FeatureShowcase />
+        <UserIcon onLoginClick={() => setShowLoginModal(true)} />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -36,13 +52,13 @@ export default function Home() {
         <div className={styles['about-container']}>
           <h2 className={styles['section-title']}>Rólunk</h2>
           <p className={styles['section-description']}>
-            A Kiadás Figyelő egy modern, felhasználó-barát alkalmazás, amely segít neked
+            A Valora egy modern, felhasználó-barát alkalmazás, amely segít neked
             kontrollt szerezni a pénzügyi helyzetedről. Egyszerű kezelőfelülettel és
             hatékony eszközökkel támogatunk minden lépésedet a spórolás útján.
           </p>
           <p className={styles['section-description']}>
             Legyen szó egy tanár, aki költségvetést kell készítenie, vagy egy vállalkozó,
-            aki nyomon akarja követni bevételeit és kiadásait, a Kiadás Figyelő az ideális
+            aki nyomon akarja követni bevételeit és kiadásait, a Valora az ideális
             megoldás számodra.
           </p>
         </div>
@@ -51,7 +67,7 @@ export default function Home() {
       {}
       <section className={styles['features-section']}>
         <div className={styles['features-container']}>
-          <h2 className={styles['section-title']}>Miért válaszd a Kiadás Figyelőt?</h2>
+          <h2 className={styles['section-title']}>Miért válaszd a Valora-t?</h2>
 
           <div className={styles['features-grid']}>
             <div className={styles['feature-card']}>

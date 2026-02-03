@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
-import { verifyToken } from '@/lib/auth';
+import { verifyToken, extractTokenFromRequest } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
   try {
-    const token = request.cookies.get('auth_token')?.value;
+    const token = extractTokenFromRequest(request);
 
     if (!token) {
       return NextResponse.json(
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const token = request.cookies.get('auth_token')?.value;
+    const token = extractTokenFromRequest(request);
 
     if (!token) {
       return NextResponse.json(

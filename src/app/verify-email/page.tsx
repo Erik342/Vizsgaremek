@@ -100,7 +100,7 @@ export default function VerifyEmailPage() {
               {result.user?.nev ? `Üdvözöllek, ${result.user.nev}!` : 'Üdvözöllek!'}
             </p>
             <p className={styles['description']}>
-              Az email-cím ellenőrizve lett. Most már teljes hozzáférésed van a Kiadás Figyelőhöz.
+              Az email-cím ellenőrizve lett. Most már teljes hozzáférésed van a Valora-hoz.
             </p>
 
             {result.user?.email && (

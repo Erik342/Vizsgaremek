@@ -267,7 +267,8 @@ export default function Insurances() {
       case 'megszunt':
         return 'Megszűnt';
       default:
-        return statusz;
+
+      return statusz;
     }
   };
 

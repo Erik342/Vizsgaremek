@@ -33,7 +33,7 @@ export default function WelcomePrompt({ userName, onClose }: WelcomePromptProps)
           </h2>
 
           <p className={styles['description']}>
-            A Kiadás Figyelő segít nyomon követni kiadásaidat és kezelni biztosítási dokumentumaidat egyszerűen és hatékonyan.
+            A Valora segít nyomon követni kiadásaidat és kezelni biztosítási dokumentumaidat egyszerűen és hatékonyan.
           </p>
 
           <div className={styles['info-box']}>

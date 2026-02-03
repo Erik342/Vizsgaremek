@@ -40,3 +40,19 @@ export function decodeToken(token: string) {
 export function generateVerificationToken(): string {
   return crypto.randomBytes(32).toString('hex');
 }
+
+export function extractTokenFromRequest(request: any): string | null {
+  // Try to get token from Authorization header (Bearer token)
+  const authHeader = request.headers.get('authorization') || request.headers.get('Authorization');
+  if (authHeader?.startsWith('Bearer ')) {
+    return authHeader.slice(7);
+  }
+
+  // Fall back to cookie
+  const cookieToken = request.cookies?.get('auth_token')?.value;
+  if (cookieToken) {
+    return cookieToken;
+  }
+
+  return null;
+}

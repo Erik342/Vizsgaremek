@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kiadás Figyelő - Költségkezelés Made Easy",
-  description: "Kövesd nyomon kiadásaidat egyszerűen és hatékonyan a Kiadás Figyelővel",
+  title: "Valora - Több mint kiadáskövető",
+  description: "Kövesd nyomon kiadásaidat egyszerűen és hatékonyan a Valora alkalmazással.",
 };
 
 export default function RootLayout({

@@ -36,7 +36,7 @@ export async function generateInsurancePDF(data: InsurancePDFData): Promise<Buff
 
       doc.fontSize(24).font('Helvetica-Bold').text('BIZTOSÍTÁSI DOKUMENTUM', { align: 'center' });
       doc.moveDown(0.5);
-      doc.fontSize(11).font('Helvetica').fillColor('#999').text('Kiadás Figyelő', { align: 'center' });
+      doc.fontSize(11).font('Helvetica').fillColor('#999').text('Valora', { align: 'center' });
       doc.moveDown(1.5);
 
       doc.fontSize(14).font('Helvetica-Bold').fillColor('#000').text('Szerződés Összegzése');
@@ -116,7 +116,7 @@ export async function generateInsurancePDF(data: InsurancePDFData): Promise<Buff
 
       doc.fontSize(8).fillColor('#ccc').text('---', { align: 'center' });
       doc.moveDown(0.3);
-      doc.text('Kiadás Figyelő | © 2024 | Minden jog fenntartva', { align: 'center' });
+      doc.text('Valora | © 2025 | Minden jog fenntartva', { align: 'center' });
 
       if (data.documentNumber) {
         doc.fontSize(7).fillColor('#ddd').text(`Dokumentum szám: ${data.documentNumber}`, { align: 'right' });

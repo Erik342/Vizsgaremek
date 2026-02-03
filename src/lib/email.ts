@@ -6,7 +6,7 @@ const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
 function getResendClient() {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    throw new Error('Missing RESEND_API_KEY environment variable');
+    throw new Error('Hianyzo RESEND_API_KEY ');
   }
   return new Resend(apiKey);
 }
@@ -41,7 +41,7 @@ export async function sendRegistrationEmail({
     const response = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: 'Kiadás Figyelő - Fiók aktiválása',
+      subject: 'Valora - Fiók aktiválása',
       html: registrationEmailTemplate(userName, verificationLink),
     });
 
@@ -83,7 +83,7 @@ export async function sendInsuranceDocumentEmail({
     const response = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: `Kiadás Figyelő - Biztosítás dokumentumok (${insuranceName})`,
+      subject: `Valora - Biztosítás dokumentumok (${insuranceName})`,
       html: insuranceEmailTemplate(userName, insuranceName, policyNumber, provider, coverageType, monthlyPremium),
       attachments,
     });
@@ -254,13 +254,13 @@ function registrationEmailTemplate(userName: string, verificationLink: string): 
       <body>
         <div class="container">
           <div class="header">
-            <h1>Kiadás Figyelő</h1>
+            <h1>Valora</h1>
             <p>Üdvözöllek a közösségben! 👋</p>
           </div>
           <div class="content">
             <p class="greeting">Szia ${userName}!</p>
             <p class="message">
-              Köszönünk a regisztrációért a Kiadás Figyelő alkalmazásba. Végezzük el az utolsó lépést az e-mail cím megerősítésével, hogy teljes hozzáférést kapj az alkalmazáshoz.
+              Köszönünk a regisztrációért a Valora alkalmazásba. Végezzük el az utolsó lépést az e-mail cím megerősítésével, hogy teljes hozzáférést kapj az alkalmazáshoz.
             </p>
 
             <div class="verification-box">
@@ -298,7 +298,7 @@ function registrationEmailTemplate(userName: string, verificationLink: string): 
           </div>
 
           <div class="footer">
-            <p>© 2024 Kiadás Figyelő. Minden jog fenntartva.</p>
+            <p>© 2025 Valora. Minden jog fenntartva.</p>
             <p style="margin-top: 10px; font-size: 11px;">
               Ez az e-mail automatikus. Kérjük, ne válaszolj erre az e-mailre.
             </p>
@@ -323,7 +323,7 @@ export async function sendWelcomeEmail({
     const response = await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: 'Üdvözöllek a Kiadás Figyelőben! 👋',
+      subject: 'Üdvözöllek a Valora-ban! 👋',
       html: welcomeEmailTemplate(userName),
     });
 
@@ -510,13 +510,13 @@ function welcomeEmailTemplate(userName: string): string {
       <body>
         <div class="container">
           <div class="header">
-            <h1>Kiadás Figyelő</h1>
+            <h1Valora</h1>
             <p>Üdvözöllek! 👋</p>
           </div>
           <div class="content">
             <p class="greeting">Szia ${userName}!</p>
             <p class="intro">
-              Köszönünk, hogy csatlakoztál a Kiadás Figyelőhöz! Egy modern, felhasználóbarát alkalmazáshoz érkeztél, amely segít nyomon követni kiadásaidat, megtervezni költségvetésed, és biztonságosan kezelni biztosítási dokumentumaidat.
+              Köszönünk, hogy csatlakoztál a Valora-hoz! Egy modern, felhasználóbarát alkalmazáshoz érkeztél, amely segít nyomon követni kiadásaidat, megtervezni költségvetésed, és biztonságosan kezelni biztosítási dokumentumaidat.
             </p>
 
             <div class="section">
@@ -661,7 +661,7 @@ function welcomeEmailTemplate(userName: string): string {
           </div>
 
           <div class="footer">
-            <p>© 2024 Kiadás Figyelő. Minden jog fenntartva.</p>
+            <p>© 2025 Valora. Minden jog fenntartva.</p>
             <div class="footer-links">
               <a href="#">Adatvédelmi nyilatkozat</a>
               <a href="#">Felhasználási feltételek</a>
@@ -812,7 +812,7 @@ function insuranceEmailTemplate(
       <body>
         <div class="container">
           <div class="header">
-            <h1>Kiadás Figyelő</h1>
+            <h1>Valora</h1>
             <p>📋 Biztosítás Dokumentumok</p>
           </div>
           <div class="content">
@@ -867,7 +867,7 @@ function insuranceEmailTemplate(
           </div>
 
           <div class="footer">
-            <p>© 2024 Kiadás Figyelő. Minden jog fenntartva.</p>
+            <p>© 2025 Valora. Minden jog fenntartva.</p>
             <p style="margin-top: 10px; font-size: 11px;">
               A biztosítási dokumentumok biztonságosan tárolódnak az alkalmazásban.
             </p>
