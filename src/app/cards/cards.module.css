@@ -46,7 +46,7 @@
   border-radius: 6px;
   background-color: var(--gray-medium);
   border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
   white-space: nowrap;
 }
 
@@ -84,7 +84,7 @@
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
   cursor: pointer;
 }
 
@@ -341,7 +341,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   border: 1px solid var(--border-color);
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 
 .info-card:hover {

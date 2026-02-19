@@ -128,11 +128,30 @@ export default function Insurances() {
     }
 
     if (!isLoading && isLoggedIn && user) {
-      setFormData(prev => ({
-        ...prev,
-        nev: user.nev || '',
-        email: user.email || ''
-      }));
+      // Try to load saved form data from localStorage
+      const savedFormData = localStorage.getItem('insuranceFormData');
+
+      if (savedFormData) {
+        try {
+          const parsed = JSON.parse(savedFormData);
+          setFormData(parsed);
+        } catch (err) {
+          // If parsing fails, use default values with user data
+          setFormData(prev => ({
+            ...prev,
+            nev: user.nev || '',
+            email: user.email || ''
+          }));
+        }
+      } else {
+        // No saved data, use user data
+        setFormData(prev => ({
+          ...prev,
+          nev: user.nev || '',
+          email: user.email || ''
+        }));
+      }
+
       fetchInsurances();
     }
   }, [isLoggedIn, isLoading, router, user]);
@@ -156,6 +175,11 @@ export default function Insurances() {
       setLoading(false);
     }
   };
+
+  // Auto-save form data to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('insuranceFormData', JSON.stringify(formData));
+  }, [formData]);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -207,6 +231,8 @@ export default function Insurances() {
 
       if (response.ok) {
         setShowBindingForm(false);
+        // Clear saved form data after successful submission
+        localStorage.removeItem('insuranceFormData');
         setFormData({
           tipus: '',
           havi_dij: '',

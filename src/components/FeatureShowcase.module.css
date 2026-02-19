@@ -46,7 +46,7 @@
   color: var(--text-primary);
   z-index: 10;
   opacity: 0;
-  transition: opacity 0.8s ease-in;
+  transition: opacity 0.3s ease-in;
   pointer-events: none;
 }
 
@@ -56,7 +56,7 @@
 }
 
 .feature-display {
-  animation: slideShowFadeIn 0.8s ease-out forwards;
+  animation: slideShowFadeIn 0.3s ease-out forwards;
 }
 
 @keyframes slideShowFadeIn {
@@ -74,7 +74,7 @@
   font-size: 5rem;
   margin-bottom: 20px;
   display: inline-block;
-  animation: iconBounce 0.6s ease-out;
+  animation: iconBounce 0.2s ease-out;
 }
 
 @keyframes iconBounce {
@@ -122,7 +122,7 @@
   border: 2px solid var(--accent);
   background: transparent;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
   padding: 0;
 }
 
@@ -153,7 +153,7 @@
   font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 
 .nav-button:hover {

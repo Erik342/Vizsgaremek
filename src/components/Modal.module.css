@@ -10,7 +10,7 @@
   justify-content: center;
   z-index: 100;
   backdrop-filter: blur(4px);
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.1s ease
 }
 
 @keyframes fadeIn {
@@ -30,7 +30,7 @@
   max-width: 420px;
   width: 90%;
   position: relative;
-  animation: slideUp 0.3s ease;
+  animation: slideUp 0.1s ease;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
@@ -54,7 +54,7 @@
   font-size: 24px;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.1s ease;
   padding: 0;
   width: 30px;
   height: 30px;
@@ -101,7 +101,7 @@
   border-radius: 8px;
   color: var(--text-primary);
   font-size: 0.95rem;
-  transition: all 0.2s ease;
+  transition: all 0.1s ease;
   font-family: inherit;
 }
 
@@ -135,7 +135,7 @@
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.1s ease;
   margin-top: 10px;
 }
 
@@ -184,7 +184,7 @@
   color: var(--text-secondary);
   font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.1s ease;
   font-family: inherit;
 }
 

@@ -46,7 +46,7 @@
   border-radius: 6px;
   background-color: var(--gray-medium);
   border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
   white-space: nowrap;
 }
 
@@ -85,7 +85,7 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 
 .bind-insurance-button:hover {
@@ -114,7 +114,7 @@
   font-weight: 600;
   cursor: pointer;
   margin-bottom: 20px;
-  transition: color 0.3s ease;
+  transition: color 0.1s ease;
 }
 
 .back-form-button:hover {
@@ -159,7 +159,7 @@
   border-radius: 12px;
   padding: 20px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 
 .insurance-option:hover {
@@ -252,7 +252,7 @@
   border-radius: 6px;
   color: var(--text-primary);
   font-size: 14px;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.1s ease;
 }
 
 .form-input:focus,
@@ -278,7 +278,7 @@
   background: var(--gray-dark);
   border: 2px solid var(--border-color);
   border-radius: 8px;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.1s ease;
 }
 
 .signature-input-wrapper:focus-within {
@@ -297,7 +297,7 @@
   font-weight: 400;
   letter-spacing: 1px;
   outline: none;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 
 .signature-input:focus {
@@ -329,7 +329,7 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 
 .cancel-button:hover {
@@ -347,7 +347,7 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 
 .submit-binding-button:hover:not(:disabled) {
@@ -407,7 +407,7 @@
   padding: 24px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
   cursor: pointer;
 }
 
@@ -498,7 +498,7 @@
 
 .card-details {
   margin-top: 16px;
-  animation: expandIn 0.3s ease;
+  animation: expandIn 0.1s ease;
 }
 
 @keyframes expandIn {
@@ -561,7 +561,7 @@
   color: var(--accent);
   font-weight: 600;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.1s ease;
 }
 
 .card-expand-hint:hover {
@@ -592,7 +592,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   border: 1px solid var(--border-color);
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 
 .info-card:hover {

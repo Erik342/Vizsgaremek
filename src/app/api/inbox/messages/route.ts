@@ -7,6 +7,7 @@ export async function GET(request: NextRequest) {
     const token = extractTokenFromRequest(request);
 
     if (!token) {
+      console.warn('No token found in inbox GET request');
       return NextResponse.json(
         { messages: [], success: true },
         { status: 200 }
@@ -15,6 +16,7 @@ export async function GET(request: NextRequest) {
 
     const decoded = verifyToken(token);
     if (!decoded) {
+      console.warn('Invalid token in inbox GET request');
       return NextResponse.json(
         { messages: [], success: true },
         { status: 200 }
@@ -22,6 +24,7 @@ export async function GET(request: NextRequest) {
     }
 
     const userId = decoded.userId;
+    console.log('Fetching messages for user ID:', userId);
 
     try {
       const messages = await query(
@@ -32,6 +35,8 @@ export async function GET(request: NextRequest) {
          LIMIT 100`,
         [userId]
       );
+
+      console.log(`Found ${Array.isArray(messages) ? messages.length : 0} messages for user ${userId}`);
 
       return NextResponse.json({
         messages: Array.isArray(messages) ? messages : [],

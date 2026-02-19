@@ -33,11 +33,16 @@ export function InboxProvider({ children }: { children: React.ReactNode }) {
   const fetchMessages = useCallback(async () => {
     try {
       setIsLoading(true);
+
+      // Get token from localStorage for Bearer authentication
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+
       const response = await fetch('/api/inbox/messages', {
         method: 'GET',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
         },
       });
 
@@ -56,6 +61,7 @@ export function InboxProvider({ children }: { children: React.ReactNode }) {
         ...msg,
         timestamp: new Date(msg.timestamp),
       }));
+      console.log('Fetched messages:', formattedMessages);
       setMessages(formattedMessages);
     } catch (error) {
       // Silently fail if network error (user might be offline or not authenticated)
@@ -66,14 +72,17 @@ export function InboxProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    // Check if user has auth token before attempting to fetch
-    const hasAuth = document.cookie.includes('auth_token');
+    // Check if user has auth token in localStorage (since cookie is HttpOnly)
+    const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
-    if (hasAuth) {
+    if (token) {
+      console.log('Auth token found, starting message fetch');
       fetchMessages();
-      // Refresh messages every 30 seconds
-      const interval = setInterval(fetchMessages, 30000);
+      // Refresh messages every 5 seconds for faster delivery
+      const interval = setInterval(fetchMessages, 5000);
       return () => clearInterval(interval);
+    } else {
+      console.log('No auth token found, skipping message fetch');
     }
   }, [fetchMessages]);
 

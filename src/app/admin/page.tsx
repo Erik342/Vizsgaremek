@@ -99,6 +99,61 @@ export default function AdminPanel() {
     router.push('/');
   };
 
+  const handleDebugMessages = async () => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch('/api/admin/debug-messages', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        },
+      });
+
+      const data = await response.json();
+      console.log('Debug messages data:', data);
+      alert(`
+        Összes felhasználó: ${data.totalUsers}
+        Összes üzenet az adatbázisban: ${data.totalMessages}
+
+        Üzenetek: ${JSON.stringify(data.messages, null, 2)}
+      `);
+    } catch (err) {
+      console.error('Debug error:', err);
+      alert('Hiba a debug lekérdezéskor');
+    }
+  };
+
+  const handleSendTestMessage = async () => {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch('/api/inbox/broadcast', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        },
+        body: JSON.stringify({
+          type: 'notification',
+          title: '🧪 Teszt Üzenet',
+          message: 'Ez egy teszt üzenet az adatbázis ellenőrzéshez',
+          icon: '🧪'
+        })
+      });
+
+      const data = await response.json();
+      console.log('Test message response:', data);
+      alert(`Teszt üzenet elküldve: ${data.message}`);
+
+      // Wait a moment and refresh messages
+      setTimeout(() => handleDebugMessages(), 1000);
+    } catch (err) {
+      console.error('Test message error:', err);
+      alert('Hiba a teszt üzenet küldésekor');
+    }
+  };
+
   const handleBroadcastChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -122,17 +177,26 @@ export default function AdminPanel() {
       setBroadcastError('');
       setBroadcastSuccess('');
 
+      // Get token from localStorage for Bearer authentication
+      const token = localStorage.getItem('auth_token');
+
       const response = await fetch('/api/inbox/broadcast', {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        },
         body: JSON.stringify(broadcastForm),
       });
 
       const data = await response.json();
 
+      console.log('Broadcast response:', { status: response.status, data });
+
       if (response.ok) {
-        setBroadcastSuccess(`Üzenet sikeresen elküldve ${data.count} felhasználónak!`);
+        setBroadcastSuccess(`Üzenet sikeresen elküldve ${data.count}/${data.total} felhasználónak!`);
+        console.log('Broadcast success:', data.message);
         setBroadcastForm({
           type: 'notification',
           title: '',
@@ -145,10 +209,14 @@ export default function AdminPanel() {
           setBroadcastSuccess('');
         }, 3000);
       } else {
-        setBroadcastError(data.error || 'Hiba az üzenet küldésekor');
+        const errorMsg = data.error || data.details || 'Hiba az üzenet küldésekor';
+        console.error('Broadcast error:', errorMsg);
+        setBroadcastError(errorMsg);
       }
     } catch (err) {
-      setBroadcastError('Hiba az üzenet küldésekor');
+      const errorMsg = err instanceof Error ? err.message : 'Hiba az üzenet küldésekor';
+      console.error('Broadcast catch error:', errorMsg, err);
+      setBroadcastError(errorMsg);
     } finally {
       setBroadcastLoading(false);
     }
@@ -163,9 +231,17 @@ export default function AdminPanel() {
       <header className={styles['admin-header']}>
         <div className={styles['header-content']}>
           <h1 className={styles['admin-title']}>Admin Panel</h1>
-          <button onClick={handleLogout} className={styles['logout-button']}>
-            Kijelentkezés
-          </button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button onClick={handleSendTestMessage} style={{ padding: '10px 15px', borderRadius: '6px', background: '#00d4ff', color: '#000', border: 'none', cursor: 'pointer', fontSize: '12px', fontWeight: '600' }}>
+              🧪 Teszt Üzenet
+            </button>
+            <button onClick={handleDebugMessages} style={{ padding: '10px 15px', borderRadius: '6px', background: '#667eea', color: 'white', border: 'none', cursor: 'pointer', fontSize: '12px' }}>
+              🐛 Debug
+            </button>
+            <button onClick={handleLogout} className={styles['logout-button']}>
+              Kijelentkezés
+            </button>
+          </div>
         </div>
       </header>
 

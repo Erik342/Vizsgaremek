@@ -58,6 +58,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Ensure inbox_messages table exists with correct structure
+    try {
+      // Drop and recreate table to ensure correct structure (for development)
+      await query('DROP TABLE IF EXISTS inbox_messages');
+
+      await query(`CREATE TABLE inbox_messages (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        type VARCHAR(50) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        message LONGTEXT NOT NULL,
+        icon VARCHAR(50),
+        is_read INT DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        KEY idx_user_id (user_id),
+        KEY idx_created_at (created_at)
+      )`);
+
+      console.log('inbox_messages table recreated successfully');
+    } catch (tableError) {
+      console.error('Table creation error:', tableError instanceof Error ? tableError.message : String(tableError));
+    }
+
     // Get all user IDs
     const allUsers = await query('SELECT id FROM felhasznalok');
 
@@ -69,25 +92,28 @@ export async function POST(request: NextRequest) {
     let failedCount = 0;
     const failedUserIds: number[] = [];
 
+    console.log(`Broadcasting message to ${allUsers.length} users. Type: ${type}, Title: ${title}`);
+
     // Insert message for each user with error handling
     for (const userRow of allUsers) {
       const userData = userRow as any;
       try {
         const result = await query(
-          `INSERT INTO inbox_messages (user_id, type, title, message, icon, is_read, created_at)
-           VALUES (?, ?, ?, ?, ?, false, NOW())`,
+          `INSERT INTO inbox_messages (user_id, type, title, message, icon, is_read)
+           VALUES (?, ?, ?, ?, ?, 0)`,
           [userData.id, type, title, message, icon || null]
         );
 
-        if (result) {
-          successCount++;
-        }
+        successCount++;
+        console.log(`Message sent to user ${userData.id}`, result);
       } catch (userError) {
         failedCount++;
         failedUserIds.push(userData.id);
-        console.error(`Failed to send message to user ${userData.id}:`, userError);
+        console.error(`Failed to send message to user ${userData.id}:`, userError instanceof Error ? userError.message : String(userError));
       }
     }
+
+    console.log(`Broadcast complete. Success: ${successCount}, Failed: ${failedCount}`);
 
     const response = {
       success: true,

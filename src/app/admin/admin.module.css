@@ -35,7 +35,7 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.1s ease;
 }
 
 .logout-button:hover {
@@ -70,7 +70,7 @@
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.1s ease;
 }
 
 .refresh-button:hover {
@@ -196,7 +196,7 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
   white-space: nowrap;
 }
 
@@ -296,7 +296,7 @@
   color: var(--text-primary);
   font-family: inherit;
   font-size: 14px;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 
 .form-input:focus,
@@ -321,7 +321,7 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
   align-self: flex-start;
 }
 
@@ -367,7 +367,7 @@
   border-radius: 6px;
   background-color: var(--gray-medium);
   border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 
 .nav-link:hover {

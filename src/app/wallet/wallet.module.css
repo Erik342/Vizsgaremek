@@ -46,7 +46,7 @@
   border-radius: 6px;
   background-color: var(--gray-medium);
   border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
   white-space: nowrap;
 }
 
@@ -119,7 +119,7 @@
   border-radius: 6px;
   color: var(--text-primary);
   font-size: 14px;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.1s ease;
 }
 
 .form-input:focus,
@@ -143,7 +143,7 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
   margin-top: 8px;
 }
 
@@ -215,7 +215,7 @@
   background: var(--gray-dark);
   border-radius: 8px;
   border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
 }
 
 .expense-item:hover {
@@ -264,7 +264,7 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
   white-space: nowrap;
 }
 
