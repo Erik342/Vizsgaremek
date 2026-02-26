@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
 
     try {
       const messages = await query(
-        `SELECT id, type, title, message, icon, is_read as read, created_at as timestamp
+        `SELECT id, type, title, message, icon, is_read as \`read\`, created_at as timestamp
          FROM inbox_messages
          WHERE user_id = ?
          ORDER BY created_at DESC
