@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
 
 :root {
-  --background: #1a1a1a;
+  --background: #0a0a0a;
   --foreground: #ffffff;
-  --gray-dark: #0f0f0f;
-  --gray-medium: #2a2a2a;
-  --gray-light: #3a3a3a;
-  --accent: #00d4ff;
+  --gray-dark: #000000;
+  --gray-medium: #1a1a1a;
+  --gray-light: #2a2a2a;
+  --accent: #ffffff;
   --text-primary: #ffffff;
-  --text-secondary: #a0a0a0;
-  --border-color: #3a3a3a;
+  --text-secondary: #b0b0b0;
+  --border-color: #2a2a2a;
   --font-signature: 'Dancing Script', cursive;
 }
 
