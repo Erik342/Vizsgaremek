@@ -10,7 +10,6 @@ export interface User {
   currency?: string;
   location?: string;
   profile_picture?: string;
-  has_completed_onboarding?: boolean;
 }
 
 interface AuthContextType {

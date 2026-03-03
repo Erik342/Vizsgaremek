@@ -45,11 +45,6 @@ async function initializeDatabase() {
       console.warn('Profile picture column might already exist');
     }
 
-    try {
-      await query(`ALTER TABLE felhasznalok ADD COLUMN IF NOT EXISTS has_completed_onboarding BOOLEAN DEFAULT false`);
-    } catch (e) {
-      console.warn('Onboarding status column might already exist');
-    }
 
     return {
       success: true,

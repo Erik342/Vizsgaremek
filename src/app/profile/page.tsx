@@ -76,12 +76,6 @@ export default function Profile() {
               <h3 className={styles['link-title']}>Biztosítások</h3>
               <p className={styles['link-description']}>Biztosítási kezelés</p>
             </a>
-
-            <a href="/dashboard" className={styles['link-card']}>
-              <div className={styles['link-icon']}>📊</div>
-              <h3 className={styles['link-title']}>Irányítópult</h3>
-              <p className={styles['link-description']}>Vissza az irányítópultra</p>
-            </a>
           </div>
         </section>
 

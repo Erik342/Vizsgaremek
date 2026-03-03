@@ -46,7 +46,6 @@ export async function POST(request: NextRequest) {
           currency: user.currency || 'HUF',
           location: user.location || null,
           profile_picture: user.profile_picture || null,
-          has_completed_onboarding: user.has_completed_onboarding || false,
         },
       },
       { status: 200 }

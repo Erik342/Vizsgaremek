@@ -78,7 +78,6 @@ export async function POST(request: NextRequest) {
           currency: 'HUF',
           location: null,
           profile_picture: null,
-          has_completed_onboarding: false,
         },
         emailSent: emailResult.success,
         welcomeEmailSent: welcomeResult.success,
