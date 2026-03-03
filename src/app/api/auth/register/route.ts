@@ -70,7 +70,16 @@ export async function POST(request: NextRequest) {
       {
         message: 'Sikeres regisztráció. Ellenőrizd az emailedet a fiók aktiválásához.',
         token,
-        user: { id: userId, nev, email, szerep: 'user' },
+        user: {
+          id: userId,
+          nev,
+          email,
+          szerep: 'user',
+          currency: 'HUF',
+          location: null,
+          profile_picture: null,
+          has_completed_onboarding: false,
+        },
         emailSent: emailResult.success,
         welcomeEmailSent: welcomeResult.success,
       },

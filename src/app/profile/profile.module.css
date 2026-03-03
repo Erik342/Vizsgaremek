@@ -45,25 +45,27 @@
 .profile-main {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 50px 20px;
 }
 
 .section-title {
   font-size: 24px;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 20px 0;
+  margin: 0 0 24px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border-color);
 }
 
 .user-info-section {
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 }
 
 .user-info-card {
-  background: var(--gray-medium);
+  background: linear-gradient(135deg, var(--gray-medium) 0%, var(--gray-light) 100%);
   border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  padding: 28px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   border: 1px solid var(--border-color);
 }
 
@@ -90,50 +92,58 @@
   font-size: 14px;
 }
 
-.quick-links-section {
-  margin-bottom: 40px;
+.quick-links-section,
+.admin-section {
+  margin-bottom: 50px;
 }
 
 .links-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
 }
 
 .link-card {
   background: var(--gray-medium);
   border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  padding: 28px 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   text-decoration: none;
   color: inherit;
-  transition: all 0.1s ease;
+  transition: all 0.2s ease;
   border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 160px;
+  justify-content: flex-start;
 }
 
 .link-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5);
-  border-color: var(--accent);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
   background: linear-gradient(135deg, var(--gray-medium) 0%, var(--gray-light) 100%);
 }
 
 .link-icon {
-  font-size: 36px;
-  margin-bottom: 12px;
+  font-size: 40px;
+  margin-bottom: 16px;
+  display: inline-block;
 }
 
 .link-title {
   font-size: 18px;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
 }
 
 .link-description {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
   margin: 0;
+  line-height: 1.5;
 }
 
 .loading {
@@ -164,5 +174,28 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+  }
+
+  .links-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .link-card {
+    padding: 20px;
+    min-height: 140px;
+  }
+
+  .link-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .link-title {
+    font-size: 16px;
+  }
+
+  .link-description {
+    font-size: 12px;
   }
 }

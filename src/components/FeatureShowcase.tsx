@@ -104,6 +104,9 @@ export default function FeatureShowcase() {
           >
             ←
           </button>
+          <a href="/dashboard" className={styles['dashboard-button']}>
+            Irányítópult
+          </a>
           <button
             className={styles['nav-button']}
             onClick={() => setCurrentIndex((prev) => (prev + 1) % features.length)}

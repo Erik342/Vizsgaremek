@@ -1,13 +1,16 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import OnboardingFlow from '@/components/OnboardingFlow';
 import styles from './dashboard.module.css';
 
 export default function Dashboard() {
   const router = useRouter();
   const { user, isLoggedIn, logout, isLoading } = useAuth();
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [savingOnboarding, setSavingOnboarding] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !isLoggedIn) {
@@ -15,9 +18,57 @@ export default function Dashboard() {
     }
   }, [isLoggedIn, isLoading, router]);
 
+  useEffect(() => {
+    // Check if user has completed onboarding
+    if (user && !user.has_completed_onboarding) {
+      setShowOnboarding(true);
+    }
+  }, [user]);
+
   const handleLogout = async () => {
     await logout();
     router.push('/');
+  };
+
+  const handleOnboardingComplete = async (data: {
+    profilePicture: string | null;
+    currency: string;
+    location: string;
+  }) => {
+    setSavingOnboarding(true);
+    try {
+      const response = await fetch('/api/users/onboarding', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(localStorage.getItem('auth_token') && {
+            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+          }),
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setShowOnboarding(false);
+        // Update user context
+        if (user) {
+          user.has_completed_onboarding = true;
+          user.currency = data.currency;
+          user.location = data.location;
+        }
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to save onboarding data:', {
+          status: response.status,
+          error: errorData.error,
+          body: errorData,
+        });
+      }
+    } catch (error) {
+      console.error('Error saving onboarding data:', error);
+    } finally {
+      setSavingOnboarding(false);
+    }
   };
 
   if (isLoading || !isLoggedIn || !user) {
@@ -25,7 +76,11 @@ export default function Dashboard() {
   }
 
   return (
-    <div className={styles['dashboard-container']}>
+    <>
+      {showOnboarding && !savingOnboarding && (
+        <OnboardingFlow onComplete={handleOnboardingComplete} />
+      )}
+      <div className={styles['dashboard-container']}>
       <header className={styles['dashboard-header']}>
         <div className={styles['header-content']}>
           <h1 className={styles['dashboard-title']}>Üdvözöllek, {user.nev}!</h1>
@@ -36,38 +91,38 @@ export default function Dashboard() {
       </header>
 
       <main className={styles['dashboard-main']}>
-        <section className={styles['welcome-section']}>
-          <h2 className={styles['section-title']}>Fiók Adatok</h2>
-          <div className={styles['user-info-card']}>
-            <div className={styles['info-row']}>
-              <span className={styles['info-label']}>Név:</span>
-              <span className={styles['info-value']}>{user.nev}</span>
-            </div>
-            <div className={styles['info-row']}>
-              <span className={styles['info-label']}>Email:</span>
-              <span className={styles['info-value']}>{user.email}</span>
-            </div>
-            <div className={styles['info-row']}>
-              <span className={styles['info-label']}>Szerepkör:</span>
-              <span className={styles['info-value']}>
-                {user.szerep === 'admin' ? 'Adminisztrátor' : 'Felhasználó'}
-              </span>
+        <section className={styles['guide-section']}>
+          <h2 className={styles['section-title']}>Használati utasítás</h2>
+          <div className={styles['guide-card']}>
+            <div className={styles['guide-content']}>
+              <h3 className={styles['guide-subtitle']}>Kezdj a Valora-val</h3>
+              <ul className={styles['guide-list']}>
+                <li>
+                  <strong>1. Fiók beállítása:</strong> Frissítsd a profilodnak, hogy az alkalmazás jobban ismerhessen.
+                </li>
+                <li>
+                  <strong>2. Bankkártyák hozzáadása:</strong> Add hozzá a kártyáidat a kiadások nyomon követéséhez.
+                </li>
+                <li>
+                  <strong>3. Kiadások regisztrálása:</strong> Rögzítsd az összes tranzakciót a pénztárcában.
+                </li>
+                <li>
+                  <strong>4. Biztosítások kezelése:</strong> Kösd meg biztosításaid és kezeld őket.
+                </li>
+                <li>
+                  <strong>5. Elemzések megtekintése:</strong> Nézd meg a költségvetési trendeket és statisztikákat.
+                </li>
+              </ul>
             </div>
           </div>
         </section>
 
-        <section className={styles['quick-links-section']}>
-          <h2 className={styles['section-title']}>Gyors Linkek</h2>
+        <section className={styles['tools-section']}>
+          <h2 className={styles['section-title']}>Eszközök & Beállítások</h2>
           <div className={styles['links-grid']}>
-            <a href="/" className={styles['link-card']}>
-              <div className={styles['link-icon']}></div>
-              <h3 className={styles['link-title']}>Kezdőlap</h3>
-              <p className={styles['link-description']}>Vissza a főoldalra</p>
-            </a>
-
             {user.szerep === 'admin' && (
               <a href="/admin" className={styles['link-card']}>
-                <div className={styles['link-icon']}></div>
+                <div className={styles['link-icon']}>⚙️</div>
                 <h3 className={styles['link-title']}>Admin Panel</h3>
                 <p className={styles['link-description']}>Adminisztrációs beállítások</p>
               </a>
@@ -76,5 +131,6 @@ export default function Dashboard() {
         </section>
       </main>
     </div>
+    </>
   );
 }

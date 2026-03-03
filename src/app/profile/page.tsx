@@ -57,36 +57,46 @@ export default function Profile() {
         </section>
 
         <section className={styles['quick-links-section']}>
-          <h2 className={styles['section-title']}>Gyors Navigáció</h2>
+          <h2 className={styles['section-title']}>Pénzügyi Eszközök</h2>
           <div className={styles['links-grid']}>
-            <a href="/" className={styles['link-card']}>
-              <h3 className={styles['link-title']}>Kezdőlap</h3>
-              <p className={styles['link-description']}>Vissza a főoldalra</p>
+            <a href="/cards" className={styles['link-card']}>
+              <div className={styles['link-icon']}>💳</div>
+              <h3 className={styles['link-title']}>Bankkártyák</h3>
+              <p className={styles['link-description']}>Kezeld a kártyáidat</p>
             </a>
 
             <a href="/wallet" className={styles['link-card']}>
-              <h3 className={styles['link-title']}>Tárca</h3>
-              <p className={styles['link-description']}>Kiadások kezelése</p>
-            </a>
-
-            <a href="/cards" className={styles['link-card']}>
-              <h3 className={styles['link-title']}>Kártyák</h3>
-              <p className={styles['link-description']}>Kártyáid kezelése</p>
+              <div className={styles['link-icon']}>💰</div>
+              <h3 className={styles['link-title']}>Pénztárca</h3>
+              <p className={styles['link-description']}>Pénzügyi áttekintés</p>
             </a>
 
             <a href="/insurances" className={styles['link-card']}>
+              <div className={styles['link-icon']}>🛡️</div>
               <h3 className={styles['link-title']}>Biztosítások</h3>
-              <p className={styles['link-description']}>Biztosítási szerződések kezelése</p>
+              <p className={styles['link-description']}>Biztosítási kezelés</p>
             </a>
 
-            {user.szerep === 'admin' && (
+            <a href="/dashboard" className={styles['link-card']}>
+              <div className={styles['link-icon']}>📊</div>
+              <h3 className={styles['link-title']}>Irányítópult</h3>
+              <p className={styles['link-description']}>Vissza az irányítópultra</p>
+            </a>
+          </div>
+        </section>
+
+        {user.szerep === 'admin' && (
+          <section className={styles['admin-section']}>
+            <h2 className={styles['section-title']}>Adminisztráció</h2>
+            <div className={styles['links-grid']}>
               <a href="/admin" className={styles['link-card']}>
+                <div className={styles['link-icon']}>⚙️</div>
                 <h3 className={styles['link-title']}>Admin Panel</h3>
                 <p className={styles['link-description']}>Adminisztrációs beállítások</p>
               </a>
-            )}
-          </div>
-        </section>
+            </div>
+          </section>
+        )}
       </main>
     </div>
   );

@@ -38,7 +38,16 @@ export async function POST(request: NextRequest) {
       {
         message: 'Sikeres bejelentkezés',
         token,
-        user: { id: user.id, nev: user.nev, email: user.email, szerep: user.szerep },
+        user: {
+          id: user.id,
+          nev: user.nev,
+          email: user.email,
+          szerep: user.szerep,
+          currency: user.currency || 'HUF',
+          location: user.location || null,
+          profile_picture: user.profile_picture || null,
+          has_completed_onboarding: user.has_completed_onboarding || false,
+        },
       },
       { status: 200 }
     );
@@ -52,9 +61,10 @@ export async function POST(request: NextRequest) {
 
     return response;
   } catch (error) {
-    console.error('Login error:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error('Login error:', errorMessage, error);
     return NextResponse.json(
-      { error: 'Hiba a bejelentkezésnél' },
+      { error: 'Hiba a bejelentkezésnél', details: errorMessage },
       { status: 500 }
     );
   }

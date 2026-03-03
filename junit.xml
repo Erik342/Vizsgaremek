@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="44" failures="0" errors="0" time="2.515">
+  <testsuite name="Currency Utilities Tests" errors="0" failures="0" skipped="0" timestamp="2026-03-03T09:29:49" time="0.805" tests="27">
+    <testcase classname="Currency Utilities Tests Currency Symbols should have USD symbol" name="Currency Utilities Tests Currency Symbols should have USD symbol" time="0.004">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Currency Symbols should have EUR symbol" name="Currency Utilities Tests Currency Symbols should have EUR symbol" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Currency Symbols should have HUF symbol" name="Currency Utilities Tests Currency Symbols should have HUF symbol" time="0.001">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Currency Names should have USD name" name="Currency Utilities Tests Currency Names should have USD name" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Currency Names should have EUR name" name="Currency Utilities Tests Currency Names should have EUR name" time="0.001">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Currency Names should have HUF name" name="Currency Utilities Tests Currency Names should have HUF name" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Format Currency - HUF should format HUF with no decimal places" name="Currency Utilities Tests Format Currency - HUF should format HUF with no decimal places" time="0.027">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Format Currency - HUF should format HUF with thousands separator" name="Currency Utilities Tests Format Currency - HUF should format HUF with thousands separator" time="0.001">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Format Currency - HUF should round HUF amount" name="Currency Utilities Tests Format Currency - HUF should round HUF amount" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Format Currency - HUF should handle zero HUF" name="Currency Utilities Tests Format Currency - HUF should handle zero HUF" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Format Currency - HUF should handle negative HUF" name="Currency Utilities Tests Format Currency - HUF should handle negative HUF" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Format Currency - HUF should use HUF by default" name="Currency Utilities Tests Format Currency - HUF should use HUF by default" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Format Currency - USD should format USD with 2 decimal places" name="Currency Utilities Tests Format Currency - USD should format USD with 2 decimal places" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Format Currency - USD should format USD with thousands separator" name="Currency Utilities Tests Format Currency - USD should format USD with thousands separator" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Format Currency - USD should handle decimal cents in USD" name="Currency Utilities Tests Format Currency - USD should handle decimal cents in USD" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Format Currency - USD should handle zero USD" name="Currency Utilities Tests Format Currency - USD should handle zero USD" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Format Currency - EUR should format EUR with 2 decimal places" name="Currency Utilities Tests Format Currency - EUR should format EUR with 2 decimal places" time="0.001">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Format Currency - EUR should format EUR correctly" name="Currency Utilities Tests Format Currency - EUR should format EUR correctly" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Get Currency Symbol should get USD symbol" name="Currency Utilities Tests Get Currency Symbol should get USD symbol" time="0.001">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Get Currency Symbol should get EUR symbol" name="Currency Utilities Tests Get Currency Symbol should get EUR symbol" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Get Currency Symbol should get HUF symbol" name="Currency Utilities Tests Get Currency Symbol should get HUF symbol" time="0.001">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Get Currency Symbol should use HUF by default" name="Currency Utilities Tests Get Currency Symbol should use HUF by default" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Get Currency Symbol should return currency code for unknown currency" name="Currency Utilities Tests Get Currency Symbol should return currency code for unknown currency" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Get Currency Symbol should return currency code for empty string" name="Currency Utilities Tests Get Currency Symbol should return currency code for empty string" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Edge Cases should handle very large amounts" name="Currency Utilities Tests Edge Cases should handle very large amounts" time="0.001">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Edge Cases should handle very small amounts" name="Currency Utilities Tests Edge Cases should handle very small amounts" time="0">
+    </testcase>
+    <testcase classname="Currency Utilities Tests Edge Cases should handle negative amounts" name="Currency Utilities Tests Edge Cases should handle negative amounts" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Authentication Tests" errors="0" failures="0" skipped="0" timestamp="2026-03-03T09:29:49" time="1.678" tests="17">
+    <testcase classname="Authentication Tests Password Hashing should hash a password correctly" name="Authentication Tests Password Hashing should hash a password correctly" time="0.099">
+    </testcase>
+    <testcase classname="Authentication Tests Password Hashing should produce different hashes for the same password" name="Authentication Tests Password Hashing should produce different hashes for the same password" time="0.224">
+    </testcase>
+    <testcase classname="Authentication Tests Password Verification should verify correct password" name="Authentication Tests Password Verification should verify correct password" time="0.164">
+    </testcase>
+    <testcase classname="Authentication Tests Password Verification should reject incorrect password" name="Authentication Tests Password Verification should reject incorrect password" time="0.18">
+    </testcase>
+    <testcase classname="Authentication Tests Password Verification should handle empty password" name="Authentication Tests Password Verification should handle empty password" time="0.167">
+    </testcase>
+    <testcase classname="Authentication Tests JWT Token Generation should generate a valid token" name="Authentication Tests JWT Token Generation should generate a valid token" time="0.002">
+    </testcase>
+    <testcase classname="Authentication Tests JWT Token Generation should include userId, email and role in token payload" name="Authentication Tests JWT Token Generation should include userId, email and role in token payload" time="0.001">
+    </testcase>
+    <testcase classname="Authentication Tests JWT Token Verification should verify valid token" name="Authentication Tests JWT Token Verification should verify valid token" time="0.003">
+    </testcase>
+    <testcase classname="Authentication Tests JWT Token Verification should return null for invalid token" name="Authentication Tests JWT Token Verification should return null for invalid token" time="0.001">
+    </testcase>
+    <testcase classname="Authentication Tests JWT Token Verification should return null for empty token" name="Authentication Tests JWT Token Verification should return null for empty token" time="0.001">
+    </testcase>
+    <testcase classname="Authentication Tests Token Decoding should decode a valid token" name="Authentication Tests Token Decoding should decode a valid token" time="0.001">
+    </testcase>
+    <testcase classname="Authentication Tests Token Decoding should return null for invalid token" name="Authentication Tests Token Decoding should return null for invalid token" time="0">
+    </testcase>
+    <testcase classname="Authentication Tests Verification Token Generation should generate a verification token" name="Authentication Tests Verification Token Generation should generate a verification token" time="0.001">
+    </testcase>
+    <testcase classname="Authentication Tests Verification Token Generation should generate different tokens each time" name="Authentication Tests Verification Token Generation should generate different tokens each time" time="0">
+    </testcase>
+    <testcase classname="Authentication Tests Verification Token Generation should generate hex string token" name="Authentication Tests Verification Token Generation should generate hex string token" time="0">
+    </testcase>
+    <testcase classname="Authentication Tests Extract Token From Request should extract token from Bearer Authorization header" name="Authentication Tests Extract Token From Request should extract token from Bearer Authorization header" time="0.001">
+    </testcase>
+    <testcase classname="Authentication Tests Extract Token From Request should return null if no token present" name="Authentication Tests Extract Token From Request should return null if no token present" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>

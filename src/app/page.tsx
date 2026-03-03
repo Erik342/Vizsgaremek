@@ -1,30 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import styles from './page.module.css';
 import UserIcon from '@/components/UserIcon';
 import LoginModal from '@/components/LoginModal';
 import RegisterModal from '@/components/RegisterModal';
 import HeroGreeting from '@/components/HeroGreeting';
-import FeatureShowcase from '@/components/FeatureShowcase';
 
 export default function Home() {
+  const router = useRouter();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const { isLoggedIn, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && isLoggedIn) {
+      router.push('/dashboard');
+    }
+  }, [isLoggedIn, isLoading, router]);
 
   if (isLoading) {
     return <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Betöltés...</div>;
   }
 
   if (isLoggedIn) {
-    return (
-      <div className={styles.container}>
-        <FeatureShowcase />
-        <UserIcon onLoginClick={() => setShowLoginModal(true)} />
-      </div>
-    );
+    return <div style={{ width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Átirányítás...</div>;
   }
 
   return (

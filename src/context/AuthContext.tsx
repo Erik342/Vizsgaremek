@@ -7,6 +7,10 @@ export interface User {
   nev: string;
   email: string;
   szerep: 'user' | 'admin';
+  currency?: string;
+  location?: string;
+  profile_picture?: string;
+  has_completed_onboarding?: boolean;
 }
 
 interface AuthContextType {

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { formatCurrency } from '@/lib/currency';
 import styles from './insurances.module.css';
 
 interface InsuranceDetail {
@@ -428,7 +429,7 @@ export default function Insurances() {
                       />
                       <div className={styles['option-header']}>
                         <h4 className={styles['option-name']}>{option.name}</h4>
-                        <span className={styles['option-price']}>{option.price.toLocaleString('hu-HU')} Ft/hó</span>
+                        <span className={styles['option-price']}>{formatCurrency(option.price, user.currency || 'HUF')}/hó</span>
                       </div>
                       <p className={styles['option-description']}>{option.description}</p>
                       <ul className={styles['option-coverage']}>
@@ -840,7 +841,7 @@ export default function Insurances() {
                       <div className={styles['content-row']}>
                         <span className={styles['content-label']}>Havi díj:</span>
                         <span className={styles['content-value']}>
-                          {Math.round(parseFloat(insurance.havi_dij as any)).toLocaleString('hu-HU')} Ft
+                          {formatCurrency(parseFloat(insurance.havi_dij as any), user.currency || 'HUF')}
                         </span>
                       </div>
                     </div>
@@ -895,7 +896,7 @@ export default function Insurances() {
                                 <span className={styles['detail-label']}>Ingatlan értéke:</span>
                                 <span className={styles['detail-value']}>
                                   {insurance.ingatlan_ertek
-                                    ? Math.round(insurance.ingatlan_ertek).toLocaleString('hu-HU') + ' Ft'
+                                    ? formatCurrency(insurance.ingatlan_ertek, user.currency || 'HUF')
                                     : '-'}
                                 </span>
                               </div>

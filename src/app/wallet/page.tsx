@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { formatCurrency } from '@/lib/currency';
 import styles from './wallet.module.css';
 
 interface Expense {
@@ -178,7 +179,7 @@ export default function Wallet() {
               </div>
 
               <div className={styles['form-group']}>
-                <label htmlFor="osszeg" className={styles['form-label']}>Összeg (Ft)</label>
+                <label htmlFor="osszeg" className={styles['form-label']}>Összeg ({user.currency || 'HUF'})</label>
                 <input
                   id="osszeg"
                   type="number"
@@ -200,7 +201,7 @@ export default function Wallet() {
           <section className={styles['stats-section']}>
             <div className={styles['stat-card']}>
               <div className={styles['stat-label']}>Összes Kiadás</div>
-              <div className={styles['stat-value']}>{Math.round(totalExpenses).toLocaleString('hu-HU')} Ft</div>
+              <div className={styles['stat-value']}>{formatCurrency(totalExpenses, user.currency || 'HUF')}</div>
             </div>
             <div className={styles['stat-card']}>
               <div className={styles['stat-label']}>Kiadások Száma</div>
@@ -227,7 +228,7 @@ export default function Wallet() {
                       {new Date(expense.letrehozasi_ido).toLocaleDateString('hu-HU')}
                     </div>
                   </div>
-                  <div className={styles['expense-amount']}>{Math.round(parseFloat(expense.osszeg as any)).toLocaleString('hu-HU')} Ft</div>
+                  <div className={styles['expense-amount']}>{formatCurrency(parseFloat(expense.osszeg as any), user.currency || 'HUF')}</div>
                   <button
                     onClick={() => handleDeleteExpense(expense.id)}
                     className={styles['delete-button']}
