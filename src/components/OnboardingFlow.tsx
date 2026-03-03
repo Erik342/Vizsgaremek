@@ -9,9 +9,11 @@ interface OnboardingFlowProps {
     currency: string;
     location: string;
   }) => void;
+  isLoading?: boolean;
+  error?: string | null;
 }
 
-export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
+export default function OnboardingFlow({ onComplete, isLoading = false, error = null }: OnboardingFlowProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [currency, setCurrency] = useState('HUF');
@@ -151,25 +153,35 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
         </div>
 
         <div className={styles['onboarding-footer']}>
-          <button
-            className={styles['secondary-button']}
-            onClick={handlePrev}
-            style={{ visibility: currentStep === 1 ? 'hidden' : 'visible' }}
-          >
-            ← Vissza
-          </button>
-          <button
-            className={styles['secondary-button']}
-            onClick={handleSkip}
-          >
-            Kihagyás
-          </button>
-          <button
-            className={styles['primary-button']}
-            onClick={handleNext}
-          >
-            {currentStep === totalSteps ? 'Befejezés' : 'Tovább →'}
-          </button>
+          {error && (
+            <div className={styles['error-message']}>
+              ⚠️ {error}
+            </div>
+          )}
+          <div className={styles['button-group']}>
+            <button
+              className={styles['secondary-button']}
+              onClick={handlePrev}
+              disabled={isLoading}
+              style={{ visibility: currentStep === 1 ? 'hidden' : 'visible' }}
+            >
+              ← Vissza
+            </button>
+            <button
+              className={styles['secondary-button']}
+              onClick={handleSkip}
+              disabled={isLoading}
+            >
+              Kihagyás
+            </button>
+            <button
+              className={styles['primary-button']}
+              onClick={handleNext}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Mentés...' : (currentStep === totalSteps ? 'Befejezés' : 'Tovább →')}
+            </button>
+          </div>
         </div>
       </div>
     </div>

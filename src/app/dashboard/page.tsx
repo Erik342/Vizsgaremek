@@ -11,6 +11,7 @@ export default function Dashboard() {
   const { user, isLoggedIn, logout, isLoading } = useAuth();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [savingOnboarding, setSavingOnboarding] = useState(false);
+  const [onboardingError, setOnboardingError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isLoading && !isLoggedIn) {
@@ -36,20 +37,27 @@ export default function Dashboard() {
     location: string;
   }) => {
     setSavingOnboarding(true);
+    setOnboardingError(null);
     try {
+      const authToken = localStorage.getItem('auth_token');
+      if (!authToken) {
+        setOnboardingError('Hitelesítési token hiányzik. Kérjük, jelentkezzen be újra.');
+        setSavingOnboarding(false);
+        return;
+      }
+
       const response = await fetch('/api/users/onboarding', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          ...(localStorage.getItem('auth_token') && {
-            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-          }),
+          'Authorization': `Bearer ${authToken}`,
         },
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
         setShowOnboarding(false);
+        setOnboardingError(null);
         // Update user context
         if (user) {
           user.has_completed_onboarding = true;
@@ -57,15 +65,36 @@ export default function Dashboard() {
           user.location = data.location;
         }
       } else {
-        const errorData = await response.json();
-        console.error('Failed to save onboarding data:', {
-          status: response.status,
-          error: errorData.error,
-          body: errorData,
-        });
+        // grab raw text first so we can log whatever came back
+        const text = await response.text();
+        let errorMessage = 'Ismeretlen hiba történt';
+        let errorData: any = null;
+        try {
+          errorData = JSON.parse(text);
+          errorMessage = errorData?.error || errorMessage;
+        } catch {
+          // not JSON, leave text as-is
+          if (text) errorMessage = text;
+        }
+
+        setOnboardingError(errorMessage);
+        console.error(
+          `Failed to save onboarding data (status ${response.status})`,
+          {
+            status: response.status,
+            error: errorMessage,
+            raw: text,
+            parsed: errorData,
+          }
+        );
       }
     } catch (error) {
-      console.error('Error saving onboarding data:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Ismeretlen hiba';
+      setOnboardingError(`Hiba az onboarding mentésekor: ${errorMessage}`);
+      console.error('Error saving onboarding data:', {
+        message: errorMessage,
+        error,
+      });
     } finally {
       setSavingOnboarding(false);
     }
@@ -77,8 +106,12 @@ export default function Dashboard() {
 
   return (
     <>
-      {showOnboarding && !savingOnboarding && (
-        <OnboardingFlow onComplete={handleOnboardingComplete} />
+      {showOnboarding && (
+        <OnboardingFlow
+          onComplete={handleOnboardingComplete}
+          isLoading={savingOnboarding}
+          error={onboardingError}
+        />
       )}
       <div className={styles['dashboard-container']}>
       <header className={styles['dashboard-header']}>
